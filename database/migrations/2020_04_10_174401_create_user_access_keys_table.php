@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateUsersTable extends Migration
+class CreateUserAccessKeysTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,17 +13,16 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('name');
-            $table->string('email_address')->unique();
-            $table->string('password');
-            $table->tinyInteger('account_type');
-            $table->integer('account_id');
-            $table->tinyInteger('status');
-            $table->rememberToken();
+        Schema::create('user_access_keys', function (Blueprint $table) {
+            $table->id();
+            $table->integer('user_id')->unsigned()->unique();
+            $table->string('api_key', 60);
+            $table->integer('status')->default(1);
+            $table->timestamp('last_activity_at')->useCurrent();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
@@ -34,6 +33,6 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('user_access_keys');
     }
 }
