@@ -242,11 +242,13 @@ class ApiResponse extends Response
 
         foreach ($errors->all() as $error) {
             $error = [
-                'title' => 'Input Parameters Error',
+                'title' => 'Input Parameter Error',
                 'detail' => $error,
                 'status' => self::BAD_REQUEST,
+                'code' => ApiError::REQUEST_MISSING_PARAMETER,
             ];
 
+            // Add error
             $this->addError($error);
         }
 

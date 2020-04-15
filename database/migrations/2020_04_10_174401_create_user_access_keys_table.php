@@ -14,8 +14,8 @@ class CreateUserAccessKeysTable extends Migration
     public function up()
     {
         Schema::create('user_access_keys', function (Blueprint $table) {
-            $table->id();
-            $table->integer('user_id')->unsigned()->unique();
+            $table->increments('id');
+            $table->integer('user_id')->unsigned();
             $table->string('api_key', 60);
             $table->integer('status')->default(1);
             $table->timestamp('last_activity_at')->useCurrent();

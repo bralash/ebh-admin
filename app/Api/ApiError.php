@@ -8,4 +8,7 @@ class ApiError
     const API_KEY_NULL = 100;
     const API_KEY_MISMATCH = 101;
     const API_ACCESS_DENIED = 102;
+
+    // Request payload
+    const REQUEST_MISSING_PARAMETER = 103;
 }

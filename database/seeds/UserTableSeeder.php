@@ -17,7 +17,7 @@ class UserTableSeeder extends Seeder
         DB::table('users')->insert([
             [
                 'name' => 'John Doe',
-                'email_address' => 'jdoe@example.com',
+                'phone' => '0241597539',
                 'password' => bcrypt('password'),
                 'account_type' => 1,
                 'account_id' => 1,
@@ -25,7 +25,7 @@ class UserTableSeeder extends Seeder
             ],
             [
                 'name' => 'Jane Doe',
-                'email_address' => 'jane@example.com',
+                'phone' => '0209505135',
                 'password' => bcrypt('password'),
                 'account_type' => 1,
                 'account_id' => 1,

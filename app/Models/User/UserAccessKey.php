@@ -22,7 +22,7 @@ class UserAccessKey extends Model
     /**
      * Check users for user with matching token
      *
-     * @param string $accessToken  The access token
+     * @param string $accessToken  The access tokenC:\xampp\htdocs\iincomer\app\Models\User\Access.php
      *
      * @return mixed
      **/
