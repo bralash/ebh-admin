@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Api\ApiResponse;
+use App\Models\User\User;
 use Illuminate\Http\Request;
 use App\Traits\ReturnsApiResponse;
 use App\Http\Controllers\Controller;
@@ -42,12 +43,67 @@ class LoginController extends Controller
         $this->response = new ApiResponse();
     }
 
-    public function attempt(Request $request)
+    /**
+     * Get the login username to be used by the controller.
+     *
+     * @return string
+     */
+    public function username()
     {
+        return 'phone';
+    }
+
+    /**
+     * Validates request inputs, checks against rules
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return void
+     */
+    public function validateLogin($request)
+    {
+        // Validate input using ReturnsApiResponse
         $this->validateInputs($request->all(), [
             'phone' => 'required',
+            'password' => 'required'
         ]);
+    }
 
-        return "OK";
+    /**
+     * Send the response after the user was authenticated.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    protected function sendLoginResponse(Request $request)
+    {
+        if ($response = $this->authenticated($request, $this->guard()->user())) {
+            return $response;
+        }
+    }
+
+    /**
+     * The user has been authenticated.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  mixed  $user
+     * @return mixed
+     */
+    protected function authenticated(Request $request, $user)
+    {
+        $this->response->addData($user->id, 'users', $user, ['name', 'phone', 'account_type', 'account_id', 'access']);
+        return $this->response->ok();
+        //
+    }
+
+    /**
+     * Send the response after the user was authenticated.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    protected function sendFailedLoginResponse($request)
+    {
+        // Return an unauthorized response
+        return $this->response->unauthorized(User::ERROR_NOT_FOUND, 'Wrong user credentials');
     }
 }

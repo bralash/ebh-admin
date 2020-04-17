@@ -14,6 +14,7 @@ abstract class Response {
     const FORBIDDEN = 403;
     const NOT_FOUND = 404;
     const UNSUPPORTED_MEDIA_TYPE = 415;
+    const UNPROCESSABLE_ENTITY = 422;
     const INTERNAL_SERVER_ERROR = 500;
 
     protected $response;

@@ -22,12 +22,14 @@ Route::group(['prefix' => 'v1'], function () {
 
     // auth/*
     Route::group(['prefix' => 'auth', 'namespace' => 'Auth'], function () {
-        Route::post('login', 'LoginController@attempt');
+        Route::post('/', 'LoginController@login')->name('auth.api');
     });
 
     Route::group(['namespace' => 'User'], function () {
         // users/*
         Route::resource('users', 'UserController');
+
+        Route::post('users', 'UserController@store')->name('user.post.api');
 
         // badges/*
         Route::resource('badges', 'BadgeController');
@@ -71,3 +73,8 @@ Route::group(['prefix' => 'v1'], function () {
         Route::resource('organizations', 'OrganizationController');
     });
 });
+
+// Catch 404
+// Route::fallback(function(){
+//     return response()->json(['error' => 'Resource not found.'], 404);
+// })->name('fallback');

@@ -1,0 +1,101 @@
+<?php
+
+use Illuminate\Database\Seeder;
+
+class CommunityTableSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
+    public function run()
+    {
+        DB::table('communities')->delete();
+
+        DB::table('communities')->insert([
+            ['name' => 'Accra', 'region' => 'Greater Accra'],
+            ['name' => 'Kumasi', 'region' => 'Ashanti'],
+            ['name' => 'Tamale', 'region' => 'Northern'],
+            ['name' => 'Sekondi-Takoradi', 'region' => 'Western'],
+            ['name' => 'Ashaiman', 'region' => 'Greater Accra'],
+            ['name' => 'Sunyani', 'region' => 'Brong-Ahafo'],
+            ['name' => 'Cape Coast', 'region' => 'Central'],
+            ['name' => 'Obuasi', 'region' => 'Ashanti'],
+            ['name' => 'Teshie', 'region' => 'Greater Accra'],
+            ['name' => 'Tema', 'region' => 'Greater Accra'],
+            ['name' => 'Madina', 'region' => 'Greater Accra'],
+            ['name' => 'Koforidua', 'region' => 'Eastern'],
+            ['name' => 'Wa', 'region' => 'Upper West'],
+            ['name' => 'Techiman', 'region' => 'Brong-Ahafo'],
+            ['name' => 'Ho', 'region' => 'Volta'],
+            ['name' => 'Nungua', 'region' => 'Greater Accra'],
+            ['name' => 'Lashibi', 'region' => 'Greater Accra'],
+            ['name' => 'Dome', 'region' => 'Greater Accra'],
+            ['name' => 'Tema New Town', 'region' => 'Greater Accra'],
+            ['name' => 'Gbawe', 'region' => 'Greater Accra'],
+            ['name' => 'Oduponkpehe', 'region' => 'Central'],
+            ['name' => 'Ejura', 'region' => 'Ashanti'],
+            ['name' => 'Taifa', 'region' => 'Greater Accra'],
+            ['name' => 'Bawku', 'region' => 'Upper East'],
+            ['name' => 'Aflao', 'region' => 'Volta'],
+            ['name' => 'Agona Swedru', 'region' => 'Central'],
+            ['name' => 'Bolgatanga', 'region' => 'Upper East'],
+            ['name' => 'Tafo', 'region' => 'Ashanti'],
+            ['name' => 'Berekum', 'region' => 'Brong-Ahafo'],
+            ['name' => 'Nkawkaw', 'region' => 'Eastern'],
+            ['name' => 'Akim Oda', 'region' => 'Eastern'],
+            ['name' => 'Winneba', 'region' => 'Central'],
+            ['name' => 'Hohoe', 'region' => 'Volta'],
+            ['name' => 'Yendi', 'region' => 'Northern'],
+            ['name' => 'Suhum', 'region' => 'Eastern'],
+            ['name' => 'Kintampo', 'region' => 'Brong-Ahafo'],
+            ['name' => 'Adenta East', 'region' => 'Greater Accra'],
+            ['name' => 'Nsawam', 'region' => 'Eastern'],
+            ['name' => 'Mampong', 'region' => 'Ashanti'],
+            ['name' => 'Konongo', 'region' => 'Ashanti'],
+            ['name' => 'Asamankese', 'region' => 'Eastern'],
+            ['name' => 'Wenchi', 'region' => 'Brong-Ahafo'],
+            ['name' => 'Savelugu', 'region' => 'Northern'],
+            ['name' => 'Agogo', 'region' => 'Ashanti'],
+            ['name' => 'Anloga', 'region' => 'Volta'],
+            ['name' => 'Prestea', 'region' => 'Western'],
+            ['name' => 'Effiakuma', 'region' => 'Western'],
+            ['name' => 'Tarkwa', 'region' => 'Western'],
+            ['name' => 'Elmina', 'region' => 'Central'],
+            ['name' => 'Dunkwa-on-Offin', 'region' => 'Central'],
+            ['name' => 'Begoro', 'region' => 'Eastern'],
+            ['name' => 'Kpandu', 'region' => 'Volta'],
+            ['name' => 'Kintampo', 'region' => 'Brong-Ahafo'],
+            ['name' => 'Navrongo', 'region' => 'Upper East'],
+            ['name' => 'Axim', 'region' => 'Western'],
+            ['name' => 'Apam', 'region' => 'Central'],
+            ['name' => 'Salaga', 'region' => 'Northern'],
+            ['name' => 'Saltpond', 'region' => 'Central'],
+            ['name' => 'Akwatia', 'region' => 'Eastern'],
+            ['name' => 'Shama', 'region' => 'Western'],
+            ['name' => 'Keta', 'region' => 'Volta'],
+            ['name' => 'Nyakrom', 'region' => 'Central'],
+            ['name' => 'Bibiani', 'region' => 'Western'],
+            ['name' => 'Somanya', 'region' => 'Eastern'],
+            ['name' => 'Foso', 'region' => 'Central'],
+            ['name' => 'Nyankpala', 'region' => 'Northern'],
+            ['name' => 'Aburi', 'region' => 'Eastern'],
+            ['name' => 'Mumford', 'region' => 'Central'],
+            ['name' => 'Bechem', 'region' => 'Brong-Ahafo'],
+            ['name' => 'Duayaw Nkwanta', 'region' => 'Brong-Ahafo'],
+            ['name' => 'Kade', 'region' => 'Eastern'],
+            ['name' => 'Anomabu', 'region' => 'Central'],
+            ['name' => 'Akropong', 'region' => 'Eastern'],
+            ['name' => 'Kete-Krachi', 'region' => 'Volta'],
+            ['name' => 'Kibi', 'region' => 'Eastern'],
+            ['name' => 'Kpandae', 'region' => 'Northern'],
+            ['name' => 'Mpraeso', 'region' => 'Eastern'],
+            ['name' => 'Akim Swedru', 'region' => 'Eastern'],
+            ['name' => 'Aboso', 'region' => 'Western'],
+            ['name' => 'Bekwai', 'region' => 'Ashanti'],
+            ['name' => 'Drobo', 'region' => 'Brong-Ahafo'],
+            ['name' => 'Banda Ahenkro', 'region' => 'Brong-Ahafo'],
+        ]);
+    }
+}

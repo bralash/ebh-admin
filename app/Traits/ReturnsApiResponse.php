@@ -16,6 +16,11 @@ trait ReturnsApiResponse
      */
     public function __construct()
     {
+        // 'title' => '',
+        // 'detail' => '',
+        // 'status' => ,
+        // 'code' => ,
+
         $this->response = new ApiResponse();
     }
 

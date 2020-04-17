@@ -47,4 +47,9 @@ class UserAccessKey extends Model
             return null;
         }
     }
+
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User\User');
+    }
 }

@@ -11,14 +11,15 @@ class ApiResponse extends Response
     public $errors;
     public $meta;
     public $view;
+    public $links;
 
     function __construct()
     {
         $this->response = response();
 
-        $this->data = array();
         $this->errors = array();
         $this->meta = new \stdClass();
+        $this->links = new \stdClass();
     }
 
     /**
@@ -91,6 +92,7 @@ class ApiResponse extends Response
         if ($id !== null) {
             $data->id = $id;
         }
+
         $data->type = $type;
         $data->attributes = new \stdClass();
 
@@ -98,7 +100,31 @@ class ApiResponse extends Response
             $data->attributes->{$prop} = $resource->{$prop};
         }
 
-        array_push($this->data, $data);
+        $this->data = $data;
+    }
+
+    /**
+     * Sets data member to a collection
+     *
+     * @param array $collection
+     * @return void
+     */
+    public function addCollection($collection)
+    {
+        $this->data = $collection;
+    }
+
+    /**
+     * Adds links to the links member
+     *
+     * @param array $links
+     * @return void
+     */
+    public function addLinks($links)
+    {
+        foreach ($links as $key => $value) {
+            $this->links->{$key} = $value;
+        }
     }
 
     /**
@@ -136,21 +162,31 @@ class ApiResponse extends Response
      **/
     protected function buildResponse($data, $status)
     {
-        // Objectify the response data
-        $this->data = (object) $this->data;
-
+        // Construct if there is data to return
         if ($data) {
+            // Properties array
             $propsArray = get_object_vars($this);
 
             if (count($this->errors) > 0 || is_null($this->data)) {
+                // Cannot return data with errors, unset data
                 unset($propsArray['data']);
             }
-            if (count($this->errors) == 0) {
-                unset($propsArray['errors']);
-            }
 
+            $arrayMems = ['errors', 'links', 'meta'];
+
+            // Remove empty members
+            array_walk($arrayMems, function($item) use (&$propsArray) {
+                // Get object vars as array, this tells if object has members
+                $counter = ($this->{$item} instanceof \stdClass) ? get_object_vars($this->{$item}) : $this->{$item};
+
+                if (count($counter) == 0) {
+                    unset($propsArray[$item]); // Cannot return empty members, unset
+                }
+            });
+
+            // Filter through properties for the properties in provided [To be used as response payload]
             $array = array_filter($propsArray, function ($key) {
-                return in_array($key, ['meta', 'errors', 'data']);
+                return in_array($key, ['meta', 'errors', 'data', 'links']);
             }, ARRAY_FILTER_USE_KEY);
         } else {
             $array = [];
