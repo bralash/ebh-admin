@@ -21,7 +21,7 @@ class UserTableSeeder extends Seeder
                 'password' => bcrypt('password'),
                 'account_type' => 1,
                 'account_id' => 1,
-                'status' => 1,
+                // 'status' => 1,
             ],
             [
                 'name' => 'Jane Doe',
@@ -29,7 +29,7 @@ class UserTableSeeder extends Seeder
                 'password' => bcrypt('password'),
                 'account_type' => 1,
                 'account_id' => 1,
-                'status' => 1,
+                // 'status' => 1,
             ]
         ]);
 

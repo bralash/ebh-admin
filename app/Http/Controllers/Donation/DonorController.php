@@ -15,14 +15,40 @@ class DonorController extends Controller
     use ReturnsApiResponse;
 
     /**
-     * Store a donor resource in db
+     * Fetch all donors
      *
      * @param Request $request
      * @return App\Api\ApiResponse
      */
     public function index(Request $request)
     {
-        $paginated = (object) Donor::paginate(15)->toArray();
+        // Search donors by blood group + location
+        $params = $request->all();
+
+        if (count($params)) {
+            // Filter for searchable columns
+            $queries = \array_filter($params, function($key) {
+                return in_array($key, ['community_id', 'blood_type_id']);
+            }, ARRAY_FILTER_USE_KEY);
+
+            $whereClauses = array();
+
+            // Construct where clause arrays
+            \array_walk($queries, function($param, $key) use (&$whereClauses) {
+            \array_push($whereClauses, [$key, '=', $param]);
+            });
+
+            $paginated = (object) Donor::where($whereClauses)->paginate(15)->toArray();
+
+            // Add searching columns to meta
+            $this->response->addMeta([
+                'search_columns' => array_keys($queries)
+            ]);
+
+        }
+        else {
+            $paginated = (object) Donor::paginate(15)->toArray();
+        }
 
         // Add links to response
         $this->response->addLinks([
