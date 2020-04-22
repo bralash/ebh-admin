@@ -7,6 +7,7 @@ use App\Models\User\User;
 use Illuminate\Http\Request;
 use App\Models\Donation\Donor;
 use App\Traits\ReturnsApiResponse;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Gate;
 
@@ -81,12 +82,18 @@ class DonorController extends Controller
      */
     public function store(Request $request)
     {
-        if (\array_search($request->user->account_type, [User::TYPE_ADMIN]) === false) {
-            return $this->response->forbidden(Donor::ERROR_ACCESS_DENIED);
-        }
+        // if (!\array_search($request->user->account_type, [User::TYPE_ADMIN]) === false) {
+            //     return $this->response->forbidden(Donor::ERROR_ACCESS_DENIED);
+        // }
+
+        // Request payload
+        $inputs = $request->all();
+
+        // Add phone to payload
+        $inputs = array_merge($inputs, ['phone' => $request->user->phone, 'badge_id' => 1]);
 
         // Validate inputs
-        $this->validateInputs($request->all(), [
+        $this->validateInputs($inputs, [
             'firstname' => 'required',
             'lastname' => 'required',
             'phone' => 'required|min:10',
@@ -95,11 +102,10 @@ class DonorController extends Controller
             'blood_type_id' => 'required|max:1',
         ]);
 
-        // Payload
-        $inputs = array_merge($request->all(), ['badge_id' => 1]);
+        DB::beginTransaction();
 
         // Find or create new
-        $donor = Donor::firstOrCreate([ 'phone' => $request->input('phone')  ], $inputs);
+        $donor = Donor::firstOrCreate([ 'phone' => $inputs['phone']  ], $inputs);
 
         // Donor already exists
         if (!$donor->wasRecentlyCreated) {
@@ -114,9 +120,10 @@ class DonorController extends Controller
         }
 
         // Success response
-        $this->response->addData($donor->id, 'donors', $donor, ['firstname', 'lastname', 'phone']);
+        $this->response->addData($donor->id, 'donors', $donor, ['firstname', 'lastname', 'phone', 'status']);
+
+        DB::commit();
 
         return $this->response->created();
     }
-    //
 }
