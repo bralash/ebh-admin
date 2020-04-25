@@ -22,6 +22,7 @@ class CreateDonorsTable extends Migration
             $table->timestamp('date_of_birth');
             $table->integer('blood_type_id')->unsigned();
             $table->integer('badge_id')->unsigned();
+            $table->tinyInteger('status')->default(0);
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
 
