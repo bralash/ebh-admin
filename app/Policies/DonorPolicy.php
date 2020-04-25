@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Models\User\User;
 use Illuminate\Http\Request;
+use App\Models\Donation\Donor;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class DonorPolicy
@@ -20,10 +21,8 @@ class DonorPolicy
         //
     }
 
-    public function manage($user, Request $request)
+    public function owns(User $user, Donor $donor)
     {
-        dd($request->user->account_type);
-        
-        return $request->user->account_type == 1;
+        return request()->user->phone == $donor->phone;
     }
 }

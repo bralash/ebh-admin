@@ -76,31 +76,54 @@ class ApiResponse extends Response
     }
 
     /**
-     * Adds data for a particular resource to the API response
+     * Adds data for a resource to the API response
+     *
+     * @param integer  $id         ID of the resource.
+     * @param string   $type       The resource type.
+     * @param mixed    $resource   The resource instance.
+     * @param array    $props      Set of attributes of the target resource to serialize.
+     * @param array    $props      Set of relations of the target resource to serialize.
+     *
+     * @return void
+     */
+    public function addData($id, $type, $resource, $props, $relations = null)
+    {
+        $this->data = self::constructData($id, $type, $resource, $props, $relations);
+    }
+
+    /**
+     * Constructs data member for a resource to the API response
      *
      * @param integer  $id     ID of the resource.
      * @param string   $type   The resource type.
      * @param array    $props  Set of attributes and values of the target resource to serialize.
      *
-     * @return void
+     * @return stdClass
      */
-    public function addData($id = null, $type, $resource, $props)
+    private function constructData($id, $type, $resource, $props, $relations)
     {
         $data = new \stdClass();
 
-        # Set the id if and only if its available
-        if ($id !== null) {
-            $data->id = $id;
-        }
+        // Set the id if and only if its available
+        if ($id !== null)  $data->id = $id;
 
         $data->type = $type;
         $data->attributes = new \stdClass();
+        $data->relationships = new \stdClass();
 
+        // Construct attributes
         foreach ($props as $key => $prop) {
             $data->attributes->{$prop} = $resource->{$prop};
         }
 
-        $this->data = $data;
+        // Construct attributes
+        if ($relations !== null) {
+            foreach ($relations as $key => $relation) {
+                $data->relationships->{$relation} = $resource->{$relation};
+            }
+        }
+
+        return $data;
     }
 
     /**
@@ -109,9 +132,14 @@ class ApiResponse extends Response
      * @param array $collection
      * @return void
      */
-    public function addCollection($collection)
+    public function addCollection($collection, $type, $props, $relations = null)
     {
-        $this->data = $collection;
+        $callable = function( $item) use ($type, $props, $relations) {
+            $item = (object) $item;
+            return self::constructData($item->id, $type, $item, $props, $relations);
+        };
+
+        $this->data = array_map($callable, $collection);;
     }
 
     /**

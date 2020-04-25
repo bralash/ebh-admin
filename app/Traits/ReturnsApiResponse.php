@@ -24,6 +24,28 @@ trait ReturnsApiResponse
         $this->response = new ApiResponse();
     }
 
+    public function addPaginationLinks($paginated)
+    {
+        $this->response->addLinks([
+            'first' => $paginated->first_page_url,
+            'last' => $paginated->last_page_url,
+            'next' => $paginated->next_page_url,
+            'prev' => $paginated->prev_page_url,
+        ]);
+    }
+
+    public function addPaginationMeta($paginated)
+    {
+        // Add metadata to response
+        $this->response->addMeta([
+            'from' => $paginated->from,
+            'last_page' => $paginated->last_page,
+            'per_page' => $paginated->per_page,
+            'to' => $paginated->to,
+            'total' => $paginated->total,
+        ]);
+    }
+
     /**
      * Validates request inputs, checks against rules
      *

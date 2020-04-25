@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use App\Models\User\User;
+use App\Policies\DonorPolicy;
+use App\Models\Donation\Donor;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
@@ -14,7 +16,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        // 'App\Model' => 'App\Policies\ModelPolicy',
+        Donor::class => DonorPolicy::class,
     ];
 
     /**
@@ -25,10 +27,5 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
-
-        // Can manage donors policy
-        Gate::define('manage-donors', function($user, Request $request) {
-            return \array_search($request->user->account_type, [User::TYPE_ADMIN]) !== false;
-        });
     }
 }

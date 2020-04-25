@@ -29,7 +29,7 @@ class DonorController extends Controller
         if (count($params)) {
             // Filter for searchable columns
             $queries = \array_filter($params, function($key) {
-                return in_array($key, ['community_id', 'blood_type_id']);
+                return in_array($key, ['community_id', 'blood_type_id', 'status']);
             }, ARRAY_FILTER_USE_KEY);
 
             $whereClauses = array();
@@ -45,31 +45,19 @@ class DonorController extends Controller
             $this->response->addMeta([
                 'search_columns' => array_keys($queries)
             ]);
-
         }
         else {
             $paginated = (object) Donor::paginate(15)->toArray();
         }
 
         // Add links to response
-        $this->response->addLinks([
-            'first' => $paginated->first_page_url,
-            'last' => $paginated->last_page_url,
-            'next' => $paginated->next_page_url,
-            'prev' => $paginated->prev_page_url,
-        ]);
+        $this->addPaginationLinks($paginated);
 
-        // Add metadata to response
-        $this->response->addMeta([
-            'from' => $paginated->from,
-            'last_page' => $paginated->last_page,
-            'per_page' => $paginated->per_page,
-            'to' => $paginated->to,
-            'total' => $paginated->total,
-        ]);
+        // Add meta to response
+        $this->addPaginationMeta($paginated);
 
         // Add data collection to response
-        $this->response->addCollection($paginated->data, ['id', 'firstname', 'lastname']);
+        $this->response->addCollection($paginated->data, 'donors', ['id', 'firstname', 'lastname'], ['badge', 'blood_type', 'community']);
 
         return $this->response->ok();
     }
@@ -82,10 +70,6 @@ class DonorController extends Controller
      */
     public function store(Request $request)
     {
-        // if (!\array_search($request->user->account_type, [User::TYPE_ADMIN]) === false) {
-            //     return $this->response->forbidden(Donor::ERROR_ACCESS_DENIED);
-        // }
-
         // Request payload
         $inputs = $request->all();
 
@@ -120,10 +104,25 @@ class DonorController extends Controller
         }
 
         // Success response
-        $this->response->addData($donor->id, 'donors', $donor, ['firstname', 'lastname', 'phone', 'status']);
+        $this->response->addData($donor->id, 'donors', $donor, ['firstname', 'lastname', 'phone']);
 
         DB::commit();
 
         return $this->response->created();
+    }
+
+    /**
+     * Returns a single donor resource
+     *
+     * @param Request $request
+     * @return App\Api\ApiResponse
+     */
+    public function show(Request $request, Donor $donor)
+    {
+        // Add response data
+        $this->response->addData($donor->id, 'donors', $donor, ['firstname', 'lastname', 'phone'], ['badge', 'blood_type', 'community']);
+
+        // Return response
+        return $this->response->ok();
     }
 }

@@ -7,5 +7,8 @@ use App\Http\Controllers\Controller;
 
 class DonationController extends Controller
 {
-    //
+    public function store()
+    {
+
+    }
 }
