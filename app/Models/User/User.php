@@ -15,11 +15,11 @@ class User extends Authenticatable
     const ERROR_EXISTS = 2001;
 
     // Types
-    const TYPE_ADMIN = 1;
+    const TYPE_GENERAL = 1;
     const TYPE_DONOR = 2;
     const TYPE_BLOOD_BANK_CONTACT = 3;
     const TYPE_ORGANIZATION_CONTACT = 4;
-    const TYPE_GENERAL = 5;
+    const TYPE_ADMIN = 5;
 
     /**
      * The attributes that are mass assignable.
@@ -51,5 +51,10 @@ class User extends Authenticatable
     public function access()
     {
         return $this->hasMany('App\Models\User\UserAccessKey');
+    }
+
+    public function getIsAdminAttribute()
+    {
+        return $this->account_type == self::TYPE_ADMIN;
     }
 }

@@ -28,7 +28,6 @@ Route::group(['prefix' => 'v1'], function () {
     Route::group(['namespace' => 'User'], function () {
         // users/*
         Route::resource('users', 'UserController');
-
         Route::post('users', 'UserController@store')->name('user.post.api');
 
         // badges/*
@@ -61,6 +60,7 @@ Route::group(['prefix' => 'v1'], function () {
 
         // blood_requests/*
         Route::resource('blood_requests', 'BloodRequestController');
+        Route::get('blood_requests/{blood_request}/donations', 'BloodRequestController@donations');
     });
 
     Route::group(['namespace' => 'Location'], function () {

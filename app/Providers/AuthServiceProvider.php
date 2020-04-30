@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Models\User\User;
 use App\Policies\DonorPolicy;
 use App\Models\Donation\Donor;
+use App\Policies\BloodRequestPolicy;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
@@ -17,6 +18,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         Donor::class => DonorPolicy::class,
+        BloodRequest::class => BloodRequestPolicy::class,
     ];
 
     /**

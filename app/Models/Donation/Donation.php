@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models\Donation;
 
 use Illuminate\Database\Eloquent\Model;
 

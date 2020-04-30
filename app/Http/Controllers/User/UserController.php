@@ -24,7 +24,7 @@ class UserController extends Controller
         $inputs = $request->all();
         // $accountDataIncluded = sizeof(\array_keys($inputs, ['account_id', 'account_type'])) > 0;
 
-        $inputs = array_merge($inputs, ['account_id' => 1, 'account_type' => 1]);
+        $inputs = array_merge($inputs, ['account_id' => 1, 'account_type' => User::TYPE_GENERAL]);
 
         // Password encryption
         $inputs['password'] = bcrypt($inputs['password']);

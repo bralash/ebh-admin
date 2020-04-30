@@ -7,6 +7,11 @@ use App\Api\ValidationException;
 
 trait ReturnsApiResponse
 {
+    /**
+     * The validator instance.
+     *
+     * @var \App\Api\ApiResponse
+     */
     private $response;
 
     /**
@@ -16,12 +21,11 @@ trait ReturnsApiResponse
      */
     public function __construct()
     {
-        // 'title' => '',
-        // 'detail' => '',
-        // 'status' => ,
-        // 'code' => ,
-
         $this->response = new ApiResponse();
+
+        if (method_exists($this, 'construct')) {
+            $this->construct();
+        }
     }
 
     public function addPaginationLinks($paginated)

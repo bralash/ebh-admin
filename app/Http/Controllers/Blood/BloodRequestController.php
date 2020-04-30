@@ -13,6 +13,29 @@ class BloodRequestController extends Controller
 {
     use ReturnsApiResponse;
 
+    public $repository;
+
+    // $this->repository;
+
+    /**
+     * Gets a collection of BloodRequest
+     *
+     * @param Request $request
+     * @return App\Api\ApiResponse
+     */
+    public function index(Request $request)
+    {
+        $canSeeClosed = $request->user->isAdmin;
+
+        // Collection
+        $collection = $canSeeClosed ? BloodRequest::all() : BloodRequest::where('closed_at', NULL)->get();
+
+        $this->response->addCollection($collection->all(), 'blood_requests', ['created_at', 'notification_sent_at', 'closed_at'], ['requester', 'location', 'blood_type', 'donations']);
+
+        // Response
+        return $this->response->ok();
+    }
+
     /**
      * Store a blood_request resource in db
      *
@@ -50,9 +73,34 @@ class BloodRequestController extends Controller
         }
 
         // Send notification
+        $this->response->addSuccessMeta('Request posted successfully');
 
-        $this->response->addSuccessMeta('Request placed successfully');
+        return $this->response->ok();
+    }
 
+    /**
+     * Shows a BloodRequest resource
+     *
+     * @param Request $request
+     * @return App\Api\ApiResponse
+     */
+    public function show(BloodRequest $bloodRequest)
+    {
+        $this->response->addData($bloodRequest->id, 'blood_requests', $bloodRequest, ['created_at', 'notification_sent_at', 'closed_at'], ['requester', 'location', 'blood_type', 'donations']);
+        // Response
+        return $this->response->ok();
+    }
+
+    /**
+     * Shows a BloodRequest resource
+     *
+     * @param Request $request
+     * @return App\Api\ApiResponse
+     */
+    public function donations(BloodRequest $bloodRequest)
+    {
+        $this->response->addCollection($bloodRequest->donations->all(), 'donations', ['id', 'donor_id', 'stage']);
+        // Response
         return $this->response->ok();
     }
 }
