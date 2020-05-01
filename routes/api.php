@@ -49,9 +49,6 @@ Route::group(['prefix' => 'v1'], function () {
     });
 
     Route::group(['namespace' => 'Blood'], function () {
-        // blood_banks/*
-        Route::resource('blood_banks', 'BloodBankController');
-
         // blood_drive/*
         Route::resource('blood_drives', 'BloodDriveController');
 
@@ -71,10 +68,8 @@ Route::group(['prefix' => 'v1'], function () {
     Route::group(['namespace' => 'Organization'], function () {
         // organizations/*
         Route::resource('organizations', 'OrganizationController');
+
+        // blood_banks/*
+        Route::resource('blood_banks', 'BloodBankController');
     });
 });
-
-// Catch 404
-// Route::fallback(function(){
-//     return response()->json(['error' => 'Resource not found.'], 404);
-// })->name('fallback');

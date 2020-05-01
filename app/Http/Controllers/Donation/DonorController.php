@@ -36,7 +36,7 @@ class DonorController extends Controller
 
             // Construct where clause arrays
             \array_walk($queries, function($param, $key) use (&$whereClauses) {
-            \array_push($whereClauses, [$key, '=', $param]);
+                \array_push($whereClauses, [$key, '=', $param]);
             });
 
             $paginated = (object) Donor::where($whereClauses)->paginate(15)->toArray();

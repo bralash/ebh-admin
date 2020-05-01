@@ -2,9 +2,10 @@
 
 namespace App\Models\User;
 
+use App\Models\Donation\Donor;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
@@ -56,5 +57,10 @@ class User extends Authenticatable
     public function getIsAdminAttribute()
     {
         return $this->account_type == self::TYPE_ADMIN;
+    }
+
+    public function donor()
+    {
+        return $this->hasOne(Donor::class, 'phone', 'phone');
     }
 }
