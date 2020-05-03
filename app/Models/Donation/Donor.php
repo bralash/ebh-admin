@@ -2,9 +2,9 @@
 
 namespace App\Models\Donation;
 
-use App\Community;
 use App\Models\User\Badge;
 use App\Models\Blood\BloodType;
+use App\Models\Location\Community;
 use Illuminate\Database\Eloquent\Model;
 
 class Donor extends Model

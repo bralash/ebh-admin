@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Api\ApiResponse;
 use App\Models\User\User;
+use App\Utility\Generator;
 use Illuminate\Http\Request;
 use App\Traits\ReturnsApiResponse;
 use App\Http\Controllers\Controller;
@@ -91,8 +92,18 @@ class LoginController extends Controller
     protected function authenticated(Request $request, $user)
     {
         $this->response->addData($user->id, 'users', $user, ['name', 'phone', 'account_type', 'account_id', 'access']);
-        return $this->response->ok();
-        //
+
+		if ($user->isAdmin) {
+			// Start session
+			$request->session()->regenerate();
+			$this->clearLoginAttempts($request);
+
+			// Returns response
+            return $this->response->ok()->withCookie(cookie()->forever('access_key', $user->access->first()->api_key));
+		}
+		else {
+			return $this->response->ok();
+		}
     }
 
     /**

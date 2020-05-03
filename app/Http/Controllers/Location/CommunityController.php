@@ -26,7 +26,7 @@ class CommunityController extends Controller
      */
     public function index()
     {
-        $paginated = (object) $this->repo::paginate(15)->toArray();
+        $paginated = (object) $this->repo::paginate(50)->toArray();
 
         // Add links to response
         $this->addPaginationLinks($paginated);
@@ -41,7 +41,7 @@ class CommunityController extends Controller
     }
 
     /**
-     * Stores a 
+     * Stores a
      *
      * @param Request $request
      * @return App\Api\ApiResponse

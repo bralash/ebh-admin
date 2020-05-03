@@ -2,10 +2,10 @@
 
 namespace App\Models\Blood;
 
-use App\Community;
 use App\Models\User\User;
 use App\Models\Blood\BloodType;
 use App\Models\Donation\Donation;
+use App\Models\Location\Community;
 use Illuminate\Database\Eloquent\Model;
 
 class BloodRequest extends Model

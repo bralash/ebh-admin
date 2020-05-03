@@ -12,12 +12,9 @@ new Vue({
 
 Dash.init({
 	baseResourceURL: Dash.select("#login-form").action,
+	requestHeaders: [],
 });
 
-// Form submit handler
-Dash.submit("login-form", (e, formdata, action) => {
-	// API call to login
-	Dash.request(Dash.url("auth"), formdata, (response) => {
-		console.log(response);
-	});
-});
+Dash.config.requestHeaders["X-CSRF-TOKEN"] = Dash.select(
+	"meta[name=csrf-token]"
+).getAttribute("content");
