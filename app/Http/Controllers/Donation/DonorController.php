@@ -39,7 +39,7 @@ class DonorController extends Controller
                 \array_push($whereClauses, [$key, '=', $param]);
             });
 
-            $paginated = (object) Donor::where($whereClauses)->paginate(15)->toArray();
+            $paginated = (object) Donor::where($whereClauses)->paginate(50)->toArray();
 
             // Add searching columns to meta
             $this->response->addMeta([
@@ -47,7 +47,7 @@ class DonorController extends Controller
             ]);
         }
         else {
-            $paginated = (object) Donor::paginate(15)->toArray();
+            $paginated = (object) Donor::paginate(50)->toArray();
         }
 
         // Add links to response

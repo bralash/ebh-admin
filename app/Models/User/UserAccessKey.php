@@ -7,7 +7,8 @@ use App\Utility\Generator;
 
 class UserAccessKey extends Model
 {
-    protected $table = 'user_access_keys';
+	protected $table = 'user_access_keys';
+	protected $fillable = ['user_id', 'api_key'];
 
     /**
      * Generates a 60 char access token

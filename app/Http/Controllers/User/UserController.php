@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\User;
 
+use ApiResponse;
 use App\Models\User\User;
 use Illuminate\Http\Request;
+use App\Models\User\UserAccessKey as Access;
 use App\Traits\ReturnsApiResponse;
 use App\Http\Controllers\Controller;
-use ApiResponse;
 
 class UserController extends Controller
 {
@@ -31,7 +32,13 @@ class UserController extends Controller
 
         try {
             // Attempt creating user
-            $user = User::create($inputs);
+			$user = User::create($inputs);
+
+			// Add User Access
+			Access::create([
+				'user_id' => $user->id,
+				'api_key' => Access::new()
+			]);
 
             // Return Response
             $this->response->addData($user->id, 'users', $user, ['name', 'phone', 'created_at']);

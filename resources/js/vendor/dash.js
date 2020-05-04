@@ -168,20 +168,20 @@ var Dash = {
 		},
 	},
 
-	// Configuration object
+	// Default Configuration
 	config: {
 		// {String}  CSS selector of active form i.e the general CSS selector of a form that is currently being edited
 		activeForm: null,
 		// {Boolean} When set to true reloads the dashboard content after a successful return of `Dash.resources.create`
 		autoReload: false,
-		// {String} Base API endpoint e.g. https://your-app.com/api/v1
+		// {String} Base API endpoint e.g. https://myapp.com/api/v1
 		baseResourceURL: null,
 		// {String}  CSS selector for the dashboard content wrapper
 		content: "#content",
 		// {Object} Default headers to be passed with every request/API call
 		requestHeaders: {},
 		// {Boolean} This when set to true will trigger a click on the first item in your view anchor NodeList i.e. the first link in your app menu
-		triggerInitialViewFetch: false,
+		triggerView: false,
 		// {String} General CSS selector for your view anchors / app menu
 		viewSelector: ".view-anchor",
 		// {String}  CSS selector for reload button i.e. button to reload your dashboard/app content only leaving menu and other static components intact
@@ -304,7 +304,7 @@ var Dash = {
 			config.data,
 			function (response) {
 				// Render view
-				Dash.renderResponse(response, config.container)
+				Dash.renderView(response, config.container)
 					.then((response) => {
 						// View name if via view anchors
 						let viewName = viewAnchor
@@ -428,18 +428,26 @@ var Dash = {
 		}
 	},
 
-	// Initialize DashJS setting configs, setting up events and request headers
-	init: function (optionsObject = {}) {
-		// Bulk set config
-		for (var option in optionsObject) {
-			Dash.config[option] = optionsObject[option];
+	/**
+	 * Initialize DashJS, Set configs, setting up events and request headers
+	 *
+	 * @param  {Object} globalConfig={}
+	 */
+	init: function (globalConfig = {}) {
+		// Set global configuration
+		for (var option in globalConfig) {
+			if (Dash.config.hasOwnProperty(option)) {
+				Dash.config[option] = globalConfig[option];
+			}
 		}
-		// Set default config
+
+		// Set default request headers
 		this.config.requestHeaders["X-Requested-With"] = "XMLHttpRequest";
 
 		this.views = document.querySelectorAll(this.config.viewSelector);
 		this.notify = this.config.notify;
 
+		// Refresh event handler
 		var refreshBtn = document.querySelector(this.config.reloadSelector);
 		if (refreshBtn) {
 			refreshBtn.addEventListener(
@@ -465,8 +473,8 @@ var Dash = {
 			);
 		});
 
-		// if triggerInitialViewFetch config is set to true, trigger click on the first view anchor node
-		if (this.config.triggerInitialViewFetch) {
+		// if triggerView config is set to true, trigger click on the first view trigger
+		if (this.config.triggerView) {
 			try {
 				// Trigger click
 				this.views[0].click();
@@ -718,7 +726,7 @@ var Dash = {
 	 *
 	 * @return void
 	 */
-	renderResponse: function (response, container) {
+	renderView: function (response, container) {
 		var contentWrapper = container, // Contents Wrapper
 			insert = () => {
 				return new Promise((resolve, reject) => {
