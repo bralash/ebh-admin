@@ -11,7 +11,8 @@
 
 <body>
 	<div id="app">Loading... Please wait</div>
-	<script src="{{url('js/app.bundle.js')}}"></script>
+	{{-- <script src="{{url('js/app.bundle.js')}}"></script> --}}
+	<script src="http://localhost:8080/js/app.bundle.js"></script>
 </body>
 
 </html>

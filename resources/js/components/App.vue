@@ -2,7 +2,11 @@
 	<v-app id="inspire">
 		<v-navigation-drawer v-model="drawer" app clipped>
 			<v-list dense>
-				<v-list-item v-for="item in items" :key="item.text" link>
+				<v-list-item
+					v-for="item in items"
+					:key="item.url"
+					:to="item.url"
+				>
 					<v-list-item-action>
 						<v-icon>{{ item.icon }}</v-icon>
 					</v-list-item-action>
@@ -13,41 +17,20 @@
 					</v-list-item-content>
 				</v-list-item>
 				<v-subheader class="mt-4 grey--text text--darken-1"
-					>SUBSCRIPTIONS</v-subheader
+					>Quick Actions</v-subheader
 				>
-				<v-list>
-					<v-list-item v-for="item in items2" :key="item.text" link>
-						<v-list-item-avatar>
-							<img
-								:src="`https://randomuser.me/api/portraits/men/${item.picture}.jpg`"
-								alt=""
-							/>
-						</v-list-item-avatar>
-						<v-list-item-title v-text="item.text" />
-					</v-list-item>
-				</v-list>
-				<v-list-item class="mt-4" link>
-					<v-list-item-action>
-						<v-icon color="grey darken-1"
-							>mdi-plus-circle-outline</v-icon
-						>
-					</v-list-item-action>
-					<v-list-item-title class="grey--text text--darken-1"
-						>Browse Channels</v-list-item-title
-					>
-				</v-list-item>
 				<v-list-item link>
 					<v-list-item-action>
 						<v-icon color="grey darken-1">mdi-settings</v-icon>
 					</v-list-item-action>
 					<v-list-item-title class="grey--text text--darken-1"
-						>Manage Subscriptions</v-list-item-title
+						>Sign Out</v-list-item-title
 					>
 				</v-list-item>
 			</v-list>
 		</v-navigation-drawer>
 
-		<v-app-bar app clipped-left color="red" dense>
+		<v-app-bar app clipped-left color="red" dense class="white--text">
 			<v-app-bar-nav-icon @click.stop="drawer = !drawer" />
 			<v-icon class="mx-4" large>
 				mdi-youtube
@@ -70,38 +53,7 @@
 
 		<v-content>
 			<v-container class="fill-height">
-				<v-row justify="center" align="center">
-					<v-col class="shrink">
-						<v-tooltip right>
-							<template v-slot:activator="{ on }">
-								<v-btn
-									:href="source"
-									icon
-									large
-									target="_blank"
-									v-on="on"
-								>
-									<v-icon large>mdi-code-tags</v-icon>
-								</v-btn>
-							</template>
-							<span>Source</span>
-						</v-tooltip>
-						<v-tooltip right>
-							<template v-slot:activator="{ on }">
-								<v-btn
-									icon
-									large
-									href="https://codepen.io/johnjleider/pen/aezMOO"
-									target="_blank"
-									v-on="on"
-								>
-									<v-icon large>mdi-codepen</v-icon>
-								</v-btn>
-							</template>
-							<span>Codepen</span>
-						</v-tooltip>
-					</v-col>
-				</v-row>
+				<router-view></router-view>
 			</v-container>
 		</v-content>
 	</v-app>
@@ -115,24 +67,19 @@ export default {
 	data: () => ({
 		drawer: null,
 		items: [
-			{ icon: "dashboard", text: "Overview" },
-			{ icon: "people", text: "Users" },
-			{ icon: "person", text: "Donors" },
-			{ icon: "person", text: "Blood Requests" },
-			{ icon: "mdi-clock", text: "Donations" },
-			{ icon: "mdi-clock", text: "Communities" },
-			{ icon: "mdi-clock", text: "Badges" },
+			{ icon: "dashboard", text: "Summary", url: "/" },
+			{ icon: "people", text: "Users", url: "users" },
+			{ icon: "person", text: "Donors", url: "donors" },
+			{ icon: "opacity", text: "Blood Requests", url: "requests" },
+			{ icon: "eco", text: "Donations", url: "donations" },
+			{ icon: "place", text: "Communities", url: "communities" },
+			{ icon: "star_outline", text: "Badges", url: "badges" },
 		],
-		items2: [
-			{ picture: 28, text: "Joseph" },
-			{ picture: 38, text: "Apple" },
-			{ picture: 48, text: "Xbox Ahoy" },
-			{ picture: 58, text: "Nokia" },
-			{ picture: 78, text: "MKBHD" },
-		],
+		items2: [{ picture: 28, text: "Joseph" }],
 	}),
+
 	created() {
-		this.$vuetify.theme.dark = true;
+		// this.$vuetify.theme.dark = true;
 	},
 };
 </script>

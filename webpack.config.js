@@ -4,6 +4,7 @@ const VueLoaderPlugin = require("vue-loader/lib/plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const config = {
+	target: "web",
 	entry: {
 		app: "./resources/js/app.js",
 		auth: "./resources/js/auth.js",
@@ -11,6 +12,7 @@ const config = {
 	output: {
 		path: path.resolve(__dirname, "./public/js"),
 		filename: "[name].bundle.js",
+		publicPath: "http://localhost:8080/js/",
 	},
 	module: {
 		rules: [
@@ -65,7 +67,17 @@ const config = {
 			filename: "../css/[name].css",
 			chunkFilename: "[id].css",
 		}),
+		new webpack.HotModuleReplacementPlugin(),
 	],
+
+	devServer: {
+		port: 8080,
+		contentBase: path.resolve(__dirname, "./public"),
+		hot: true,
+		headers: {
+			"Access-Control-Allow-Origin": "*",
+		},
+	},
 };
 
 module.exports = config;
