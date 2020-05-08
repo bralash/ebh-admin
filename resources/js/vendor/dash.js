@@ -495,6 +495,8 @@ var Dash = {
 
 		// Initialize history
 		Dash.history.init();
+
+		return this;
 	},
 
 	/**

@@ -12,7 +12,7 @@ const config = {
 	output: {
 		path: path.resolve(__dirname, "./public/js"),
 		filename: "[name].bundle.js",
-		publicPath: "http://localhost:8080/js/",
+		publicPath: "http://localhost:8088/js/",
 	},
 	module: {
 		rules: [
@@ -71,7 +71,7 @@ const config = {
 	],
 
 	devServer: {
-		port: 8080,
+		port: 8088,
 		contentBase: path.resolve(__dirname, "./public"),
 		hot: true,
 		headers: {

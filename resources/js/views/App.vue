@@ -6,6 +6,7 @@
 					v-for="item in items"
 					:key="item.url"
 					:to="item.url"
+					active-class=""
 				>
 					<v-list-item-action>
 						<v-icon>{{ item.icon }}</v-icon>
@@ -23,7 +24,9 @@
 					<v-list-item-action>
 						<v-icon color="grey darken-1">mdi-settings</v-icon>
 					</v-list-item-action>
-					<v-list-item-title class="grey--text text--darken-1"
+					<v-list-item-title
+						class="grey--text text--darken-1"
+						@click="initLogout"
 						>Sign Out</v-list-item-title
 					>
 				</v-list-item>
@@ -39,16 +42,7 @@
 				<span class="title">EBH Admin</span>
 			</v-toolbar-title>
 			<v-spacer />
-			<v-row align="center" style="max-width: 650px;">
-				<v-text-field
-					:append-icon-cb="() => {}"
-					placeholder="Search..."
-					single-line
-					append-icon="mdi-magnify"
-					color="white"
-					hide-details
-				/>
-			</v-row>
+			<v-row align="center" style="max-width: 650px;"> </v-row>
 		</v-app-bar>
 
 		<v-content>
@@ -63,6 +57,7 @@
 export default {
 	props: {
 		source: String,
+		url: String,
 	},
 	data: () => ({
 		drawer: null,
@@ -78,8 +73,16 @@ export default {
 		items2: [{ picture: 28, text: "Joseph" }],
 	}),
 
-	created() {
-		// this.$vuetify.theme.dark = true;
+	methods: {
+		initLogout() {
+			window.location.href = this.url + "/logout";
+		},
 	},
 };
 </script>
+
+<style lang="scss" scoped>
+.v-list-item--active {
+	color: #d61a01 !important;
+}
+</style>

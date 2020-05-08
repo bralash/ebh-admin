@@ -91,19 +91,26 @@ class LoginController extends Controller
      */
     protected function authenticated(Request $request, $user)
     {
-        $this->response->addData($user->id, 'users', $user, ['name', 'phone', 'account_type', 'account_id', 'access']);
+        $this->response->addData($user->id, 'users', $user, ['name', 'phone', 'account_type', 'account_id', 'access'], ['donor']);
 
-		if ($user->isAdmin) {
-			// Start session
-			$request->session()->regenerate();
-			$this->clearLoginAttempts($request);
+		try {
+			$request->session();
 
-			// Returns response
-            return $this->response->ok()->withCookie(cookie()->forever('access_key', $user->access->first()->api_key));
+			if ($user->isAdmin) {
+				// Start session
+				$request->session()->regenerate();
+				$this->clearLoginAttempts($request);
+
+				// Returns response
+				return $this->response->ok()->withCookie(cookie()->forever('access_token', $user->access->first()->api_key));
+			}
+		} catch (\Throwable $e) {
+			if ($e->getCode() === 0) {
+				return $this->response->ok();
+			}
 		}
-		else {
-			return $this->response->ok();
-		}
+
+		return $this->response->ok();
     }
 
     /**

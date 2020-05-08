@@ -4,6 +4,8 @@ namespace App\Http\Middleware;
 
 use Closure;
 use App\Api\ApiRequest;
+use Illuminate\Support\Facades\Crypt;
+use App\Http\Middleware\VerifyCsrfToken;
 
 class AuthenticateApi
 {
@@ -16,10 +18,21 @@ class AuthenticateApi
      */
     public function handle($request, Closure $next)
     {
-        $apiRequest = new ApiRequest($request);
-
         // If API request is not auth request
         if (!$request->route()->named('auth.api') && !$request->route()->named('user.post.api')) {
+
+			// Check for bearer token
+			$key = $request->bearerToken();
+
+			if ($key == null) {
+				$key = $request->cookie('access_token');
+				// dd($key);
+				$key = $key ? Crypt::decrypt($key) : null;
+
+			}
+
+			$apiRequest = new ApiRequest($request, $key);
+
             // API key not provided
             if ($apiRequest->key == null) {
                 return $apiRequest->noKeyResponse();

@@ -16,9 +16,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => 'v1'], function () {
     // test/*
-    Route::get('/test', function (Request $request) {
-        return $request->access;
-    });
+    Route::get('stats', 'AppController@stats');
 
     // auth/*
     Route::group(['prefix' => 'auth', 'namespace' => 'Auth'], function () {

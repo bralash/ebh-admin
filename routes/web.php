@@ -20,4 +20,6 @@ Route::get('/', function () {
 // /app
 Route::get('app', 'AppController@app')->middleware('auth');
 
+Route::get('logout', 'Auth\LoginController@logout');
+
 Auth::routes();

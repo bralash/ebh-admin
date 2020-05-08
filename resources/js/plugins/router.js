@@ -1,12 +1,12 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Summary from "../components/Summary";
-import Users from "../components/Users";
-import Donors from "../components/Donors";
-import BloodRequests from "../components/BloodRequests";
-import Donations from "../components/Donations";
-import Communities from "../components/Communities";
-import Badges from "../components/Badges";
+import Summary from "../views/Summary";
+import Users from "../views/Users";
+import Donors from "../views/Donors";
+import BloodRequests from "../views/BloodRequests";
+import Donations from "../views/Donations";
+import Communities from "../views/Communities";
+import Badges from "../views/Badges";
 
 Vue.use(VueRouter);
 

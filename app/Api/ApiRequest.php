@@ -6,7 +6,6 @@ use App\Api\ApiError;
 use App\Api\ApiResponse;
 use Illuminate\Http\Request;
 use App\Models\User\UserAccessKey;
-use Illuminate\Support\Facades\Crypt;
 use App\Models\User\UserAccessKey as AccessToken;
 
 class ApiRequest
@@ -25,25 +24,17 @@ class ApiRequest
      * @param Request $request
      * @return void
      */
-    function __construct(Request $request)
+    function __construct(Request $request, $key)
     {
         $this->request = $request;
         $this->response = new ApiResponse();
         $this->platform = $this->request->header('X-Platform');
+		$this->key = $key;
 
-        // Check for bearer token
-        $key = $this->request->bearerToken();
+		if ($this->key == null) {
+			return;
+		}
 
-        if ($key == null) {
-            $key = $this->request->cookie('access_token');
-            $key = $key ? Crypt::decrypt($key) : null;
-
-            if ($key == null) {
-                return;
-            }
-        }
-
-        $this->key = $key;
         $api = $this->check($this->key);
 
         $this->authenticated = $api->passed;
