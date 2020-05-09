@@ -26,9 +26,12 @@ class AuthenticateApi
 
 			if ($key == null) {
 				$key = $request->cookie('access_token');
-				// dd($key);
-				$key = $key ? Crypt::decrypt($key) : null;
+				$key = $key ? Crypt::decrypt($key, false) : null;
 
+				if ($key !== null) {
+
+					$request->session();
+				}
 			}
 
 			$apiRequest = new ApiRequest($request, $key);

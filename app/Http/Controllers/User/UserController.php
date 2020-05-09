@@ -66,6 +66,17 @@ class UserController extends Controller
                 break;
             }
         }
-    }
-    //
+	}
+
+	public function show(Request $request, User $user)
+	{
+		if (!$request->user->isAdmin) {
+			if ($request->user->id != $user->id) {
+				return $this->response->forbidden('You can\'t view this user');
+			}
+		}
+
+        $this->response->addData($user->id, 'users', $user, ['name', 'phone', 'account_type', 'account_id', 'access'], ['donor']);
+		return $this->response->ok();
+	}
 }
