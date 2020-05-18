@@ -36,7 +36,7 @@
 		<v-app-bar app clipped-left color="red" dense class="white--text">
 			<v-app-bar-nav-icon @click.stop="drawer = !drawer" />
 			<v-icon class="mx-4" large>
-				mdi-youtube
+				<!-- Replace with logo -->
 			</v-icon>
 			<v-toolbar-title class="mr-12 align-center">
 				<span class="title">EBH Admin</span>

@@ -1,6 +1,6 @@
 import Vue from "vue";
 import Dash from "./vendor/dash";
-import Login from "./views/Login";
+import Login from "./views/Login.vue";
 import vuetify from "./plugins/vuetify";
 
 // Vue instantiation

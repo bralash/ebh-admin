@@ -29,8 +29,7 @@ class AuthenticateApi
 				$key = $key ? Crypt::decrypt($key, false) : null;
 
 				if ($key !== null) {
-
-					$request->session();
+					// $request->session();
 				}
 			}
 

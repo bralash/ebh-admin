@@ -1,8 +1,16 @@
 import Vue from "vue";
-import App from "./views/App";
+import App from "./views/App.vue";
 import vuetify from "./plugins/vuetify";
 import router from "./plugins/router";
 import Dash from "./plugins/dash";
+import Page from "./components/Page.vue";
+import StatCard from "./components/StatCard.vue";
+import Table from "./components/Table.vue";
+
+// Global components
+Vue.component("page", Page);
+Vue.component("stat-card", StatCard);
+Vue.component("Table", Table);
 
 // Install dashjs plugin
 Vue.use(Dash, {

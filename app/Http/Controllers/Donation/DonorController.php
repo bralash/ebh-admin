@@ -57,7 +57,7 @@ class DonorController extends Controller
         $this->addPaginationMeta($paginated);
 
         // Add data collection to response
-        $this->response->addCollection($paginated->data, 'donors', ['id', 'firstname', 'lastname'], ['badge', 'blood_type', 'community']);
+        $this->response->addCollection($paginated->data, 'donors', ['id', 'firstname', 'lastname', 'phone'], ['badge', 'blood_type', 'community']);
 
         return $this->response->ok();
     }

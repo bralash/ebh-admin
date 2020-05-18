@@ -15,12 +15,14 @@ class User extends Authenticatable
     const ERROR_NOT_FOUND = 2000;
     const ERROR_EXISTS = 2001;
 
-    // Types
+    // User Types
     const TYPE_GENERAL = 1;
     const TYPE_DONOR = 2;
     const TYPE_BLOOD_BANK_CONTACT = 3;
     const TYPE_ORGANIZATION_CONTACT = 4;
-    const TYPE_ADMIN = 5;
+	const TYPE_ADMIN = 5;
+
+	protected $appends = ['user_type'];
 
     /**
      * The attributes that are mass assignable.
@@ -62,5 +64,18 @@ class User extends Authenticatable
     public function donor()
     {
         return $this->hasOne(Donor::class, 'phone', 'phone');
-    }
+	}
+
+	public function getUserTypeAttribute()
+	{
+		$types = [
+			self::TYPE_GENERAL => 'General',
+			self::TYPE_DONOR => 'Donor',
+			self::TYPE_BLOOD_BANK_CONTACT =>  'Blood Bank Contact',
+			self::TYPE_ORGANIZATION_CONTACT => 'Organization Contact',
+			self::TYPE_ADMIN => 'Admin'
+		];
+
+		return $types[$this->account_type];
+	}
 }

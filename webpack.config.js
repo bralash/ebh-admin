@@ -8,6 +8,7 @@ const config = {
 	entry: {
 		app: "./resources/js/app.js",
 		auth: "./resources/js/auth.js",
+		tsapp: "./resources/ts/app.ts",
 	},
 	output: {
 		path: path.resolve(__dirname, "./public/js"),
@@ -19,6 +20,11 @@ const config = {
 			{
 				test: /\.vue$/,
 				loader: "vue-loader",
+			},
+			{
+				test: /\.tsx?$/,
+				use: "ts-loader",
+				exclude: /node_modules/,
 			},
 			{
 				test: /\.js$/,
@@ -56,7 +62,7 @@ const config = {
 		],
 	},
 	resolve: {
-		extensions: [".js", ".vue"],
+		extensions: [".js", ".ts"],
 		alias: {
 			"@": path.resolve(__dirname, "./resources"),
 		},

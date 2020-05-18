@@ -11,7 +11,29 @@ use App\Http\Controllers\Controller;
 
 class UserController extends Controller
 {
-    use ReturnsApiResponse;
+	use ReturnsApiResponse;
+
+	/**
+     * Fetch all donors
+     *
+     * @param Request $request
+     * @return App\Api\ApiResponse
+     */
+	public function index()
+	{
+		$paginated = (object) User::paginate(50)->toArray();
+
+		// Add links to response
+		$this->addPaginationLinks($paginated);
+
+		// Add meta to response
+		$this->addPaginationMeta($paginated);
+
+		// Add data collection to response
+		$this->response->addCollection($paginated->data, 'users', ['id', 'name', 'phone', 'user_type']);
+
+		return $this->response->ok();
+	}
 
     public function store(Request $request) {
         // Validate inputs

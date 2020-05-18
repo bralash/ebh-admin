@@ -1,16 +1,11 @@
 <template>
-	<v-app>
-		<h1 class="ma-1">Summary</h1>
-		<v-row>
-			<v-col v-for="stat in stats" :key="stat.name">
-				<stat-card :details="stat"></stat-card>
-			</v-col>
-		</v-row>
-	</v-app>
+	<page name="Summary" desc="Here is an overview of things">
+		<stat-card :stats="stats"></stat-card>
+	</page>
 </template>
 
 <script>
-import StatCard from "../components/StatCard";
+import StatCard from "../components/StatCard.vue";
 import Dash from "../vendor/dash";
 
 export default {
@@ -18,12 +13,10 @@ export default {
 	components: {
 		StatCard,
 	},
-
 	created() {
 		// Get stats from API
 		this.$dash.resource("stats").get("", (response) => {});
 	},
-
 	data() {
 		return {
 			stats: [

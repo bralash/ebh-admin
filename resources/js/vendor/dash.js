@@ -785,7 +785,7 @@ var Dash = {
 		requiredInputs = null,
 		failedValidation
 	) {
-		// Reference the Dash.form.checkEmptyInputs() method
+		// References Dash.form.checkEmptyInputs()
 		var emptyInputs = this.form.checkEmptyInputs,
 			serializeData = this.form.serializeData;
 
