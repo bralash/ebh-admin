@@ -4,9 +4,11 @@
 			<v-card class="" max-width="344" outlined>
 				<v-list-item three-line>
 					<v-list-item-content>
-						<v-list-item-title class="headline mb-1">{{
-							stat.value
-						}}</v-list-item-title>
+						<v-list-item-title
+							v-if="stat.value"
+							class="headline mb-1"
+							>{{ stat.value }}</v-list-item-title
+						>
 						<v-list-item-subtitle>{{
 							stat.name
 						}}</v-list-item-subtitle>

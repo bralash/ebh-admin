@@ -35,7 +35,7 @@ class CommunityController extends Controller
         $this->addPaginationMeta($paginated);
 
         // Add data collection to response
-        $this->response->addCollection($paginated->data, 'communities', ['id', 'name', 'region']);
+        $this->response->addCollection($paginated->data, 'communities', ['id', 'name', 'region', 'district', 'gps_address']);
 
         return $this->response->ok();
     }

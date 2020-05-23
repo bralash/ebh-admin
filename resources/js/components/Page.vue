@@ -1,12 +1,18 @@
 <template>
-	<v-app>
-		<h1 class="">{{ name }}</h1>
-		<span class="page-desc">{{ desc }}</span>
+	<section>
+		<v-toolbar class="mt-8" flat>
+			<div>
+				<h1 class="display-1 font-weight-bold">{{ name }}</h1>
+				<span class="page-desc">{{ desc }}</span>
+			</div>
+			<v-spacer></v-spacer>
+			<slot name="tools"></slot>
+		</v-toolbar>
 
-		<section class="wrapper">
+		<v-container class="fill-height">
 			<slot> </slot>
-		</section>
-	</v-app>
+		</v-container>
+	</section>
 </template>
 
 <script>

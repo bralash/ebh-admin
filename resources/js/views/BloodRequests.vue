@@ -1,7 +1,7 @@
 <template>
 	<page name="Blood Requests" desc="Manage all blood requests">
 		<stat-card :stats="stats"></stat-card>
-		<Table :headers="headers" :items="requests"></Table>
+		<Table :headers="headers" :items="requests" :loading="loading"></Table>
 	</page>
 </template>
 
@@ -10,6 +10,7 @@ export default {
 	name: "BloodRequests",
 	data() {
 		return {
+			loading: true,
 			stats: [
 				{
 					name: "Blood Requests",
@@ -45,6 +46,8 @@ export default {
 				});
 
 				c.requests = requests;
+				c.stats[0].value = c.requests.length;
+				c.loading = false;
 			}
 		});
 	},

@@ -1,7 +1,7 @@
 <template>
 	<page name="Badges" desc="Manage all blood requests">
 		<stat-card :stats="stats"></stat-card>
-		<Table :headers="headers" :items="requests"></Table>
+		<Table :headers="headers" :items="badges" :loading="loading"></Table>
 	</page>
 </template>
 
@@ -10,21 +10,19 @@ export default {
 	name: "Badges",
 	data() {
 		return {
+			loading: true,
 			stats: [
 				{
-					name: "Blood Requests",
+					name: "Badges",
 					value: 0,
 					color: "primary",
-					icon: "opacity",
+					icon: "star",
 				},
 			],
-			requests: [],
+			badges: [],
 			headers: [
-				{ text: "Requested by", value: "requested_by" },
-				{ text: "Phone", value: "phone" },
-				{ text: "Community", value: "community" },
-				{ text: "Blood Type", value: "blood_type" },
-				{ text: "Donations", value: "donations" },
+				{ text: "Name", value: "name" },
+				{ text: "Points", value: "points" },
 			],
 		};
 	},
@@ -32,19 +30,16 @@ export default {
 	created() {
 		const c = this;
 
-		this.$dash.resource("blood_requests").get("", (response) => {
+		this.$dash.resource("badges").get("", (response) => {
 			if (response.data) {
-				const requests = response.data.map((request) => {
-					return {
-						requested_by: request.relationships.requester.name,
-						phone: request.relationships.requester.phone,
-						community: request.relationships.location.name,
-						blood_type: request.relationships.blood_type.name,
-						donations: request.relationships.donations.length,
-					};
+				const badges = response.data.map((b) => {
+					let name, points;
+					return ({ name, points } = b.attributes);
 				});
 
-				c.requests = requests;
+				c.badges = badges;
+				c.loading = false;
+				c.stats[0].value = c.badges.length;
 			}
 		});
 	},

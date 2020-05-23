@@ -1,7 +1,11 @@
 <template>
 	<page name="Communities" desc="Manage all blood requests">
 		<stat-card :stats="stats"></stat-card>
-		<Table :headers="headers" :items="requests"></Table>
+		<Table
+			:headers="headers"
+			:items="communities"
+			:loading="loading"
+		></Table>
 	</page>
 </template>
 
@@ -10,21 +14,21 @@ export default {
 	name: "Communities",
 	data() {
 		return {
+			loading: true,
 			stats: [
 				{
-					name: "Blood Requests",
+					name: "Communities",
+					color: "grey darken-2",
 					value: 0,
-					color: "primary",
-					icon: "opacity",
+					icon: "place",
 				},
 			],
-			requests: [],
+			communities: [],
 			headers: [
-				{ text: "Requested by", value: "requested_by" },
-				{ text: "Phone", value: "phone" },
-				{ text: "Community", value: "community" },
-				{ text: "Blood Type", value: "blood_type" },
-				{ text: "Donations", value: "donations" },
+				{ text: "Name", value: "name" },
+				{ text: "Region", value: "region" },
+				{ text: "District", value: "district" },
+				{ text: "GPS Adress", value: "gps" },
 			],
 		};
 	},
@@ -32,19 +36,15 @@ export default {
 	created() {
 		const c = this;
 
-		this.$dash.resource("blood_requests").get("", (response) => {
+		this.$dash.resource("communities").get("", (response) => {
 			if (response.data) {
-				const requests = response.data.map((request) => {
-					return {
-						requested_by: request.relationships.requester.name,
-						phone: request.relationships.requester.phone,
-						community: request.relationships.location.name,
-						blood_type: request.relationships.blood_type.name,
-						donations: request.relationships.donations.length,
-					};
+				const communities = response.data.map((comm) => {
+					return comm.attributes;
 				});
 
-				c.requests = requests;
+				c.communities = communities;
+				c.loading = false;
+				c.stats[0].value = c.communities.length;
 			}
 		});
 	},

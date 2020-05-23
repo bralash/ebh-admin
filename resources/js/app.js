@@ -6,6 +6,7 @@ import Dash from "./plugins/dash";
 import Page from "./components/Page.vue";
 import StatCard from "./components/StatCard.vue";
 import Table from "./components/Table.vue";
+import store from "./store";
 
 // Global components
 Vue.component("page", Page);
@@ -22,10 +23,11 @@ Vue.use(Dash, {
 	},
 });
 
-// Vue instantiation
+// Vue
 new Vue({
 	el: "#app",
 	vuetify,
+	store,
 	render: (h) =>
 		h(App, {
 			props: { url: document.querySelector("#aul .app-url").value },

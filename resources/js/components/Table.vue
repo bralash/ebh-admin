@@ -4,6 +4,7 @@
 		:items="items ? items : []"
 		:items-per-page="10"
 		class="elevation-1"
+		:loading="loading"
 	>
 	</v-data-table>
 </template>
@@ -16,6 +17,7 @@ export default {
 		filters: Object,
 		search: String,
 		items: Array,
+		loading: Boolean,
 	},
 	data() {
 		return {

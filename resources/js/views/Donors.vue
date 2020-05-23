@@ -1,7 +1,7 @@
 <template>
 	<page name="Donors" desc="Manage all donors">
 		<stat-card :stats="stats"></stat-card>
-		<Table :headers="headers" :items="donors"></Table>
+		<Table :headers="headers" :items="donors" :loading="loading"></Table>
 	</page>
 </template>
 
@@ -10,6 +10,7 @@ export default {
 	name: "Donors",
 	data() {
 		return {
+			loading: true,
 			stats: [
 				{
 					name: "Donors",
@@ -49,6 +50,8 @@ export default {
 				});
 
 				c.donors = donors;
+				c.loading = false;
+				c.stats[0].value = c.donors.length;
 			}
 		});
 	},

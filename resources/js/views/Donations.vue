@@ -1,7 +1,7 @@
 <template>
-	<page name="Donations" desc="Manage all blood requests">
+	<page name="Donations" desc="Manage blood donations">
 		<stat-card :stats="stats"></stat-card>
-		<Table :headers="headers" :items="requests"></Table>
+		<Table :headers="headers" :items="requests" :loading="loading"></Table>
 	</page>
 </template>
 
@@ -10,21 +10,23 @@ export default {
 	name: "Donations",
 	data() {
 		return {
+			loading: true,
 			stats: [
 				{
-					name: "Blood Requests",
+					name: "Donations made",
 					value: 0,
 					color: "primary",
-					icon: "opacity",
+					icon: "eco",
 				},
 			],
-			requests: [],
+			donations: [],
 			headers: [
-				{ text: "Requested by", value: "requested_by" },
-				{ text: "Phone", value: "phone" },
-				{ text: "Community", value: "community" },
-				{ text: "Blood Type", value: "blood_type" },
-				{ text: "Donations", value: "donations" },
+				{ text: "Donor", value: "donor" },
+				{ text: "Donation Type", value: "donation_type" },
+				{ text: "blood Type", value: "blood_type" },
+				{ text: "Volume", value: "volume" },
+				{ text: "Stage", value: "stage" },
+				{ text: "Event", value: "event" },
 			],
 		};
 	},
@@ -32,19 +34,22 @@ export default {
 	created() {
 		const c = this;
 
-		this.$dash.resource("blood_requests").get("", (response) => {
+		this.$dash.resource("donations").get("", (response) => {
 			if (response.data) {
-				const requests = response.data.map((request) => {
+				const donations = response.data.map((don) => {
 					return {
-						requested_by: request.relationships.requester.name,
-						phone: request.relationships.requester.phone,
-						community: request.relationships.location.name,
-						blood_type: request.relationships.blood_type.name,
-						donations: request.relationships.donations.length,
+						donor: don.relationships.donor.firstname,
+						donation_type: don.attributes.donation_type,
+						blood_type: don.relationships.blood_type.name,
+						volume: don.attributes.volume,
+						stage: don.attributes.stage,
+						event: don.attributes.event,
 					};
 				});
 
-				c.requests = requests;
+				c.loading = false;
+				c.donations = donations;
+				c.stats[0].value = c.donations.length;
 			}
 		});
 	},

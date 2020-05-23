@@ -15,7 +15,31 @@ export default {
 	},
 	created() {
 		// Get stats from API
-		this.$dash.resource("stats").get("", (response) => {});
+		const c = this;
+		this.$dash.resource("stats").get("", (response) => {
+			if (response.data) {
+				const data = response.data;
+				let statistics = [];
+
+				for (const key in data) {
+					if (data.hasOwnProperty(key)) {
+						const element = data[key];
+
+						statistics.push({
+							name: element.attributes.name,
+							value: element.attributes.value,
+						});
+					}
+				}
+				statistics.forEach((stat, index) => {
+					stat = Object.assign(stat, c.stats[index]);
+				});
+				c.stats = statistics;
+
+				// Add to state
+				c.$store.commit("updateStats", statistics);
+			}
+		});
 	},
 	data() {
 		return {
