@@ -1,7 +1,7 @@
 <template>
 	<page name="Donations" desc="Manage blood donations">
 		<stat-card :stats="stats"></stat-card>
-		<Table :headers="headers" :items="requests" :loading="loading"></Table>
+		<Table :headers="headers" :items="donations" :loading="loading"></Table>
 	</page>
 </template>
 
@@ -16,7 +16,7 @@ export default {
 					name: "Donations made",
 					value: 0,
 					color: "primary",
-					icon: "eco",
+					icon: "blood-bag",
 				},
 			],
 			donations: [],
@@ -40,10 +40,10 @@ export default {
 					return {
 						donor: don.relationships.donor.firstname,
 						donation_type: don.attributes.donation_type,
-						blood_type: don.relationships.blood_type.name,
+						blood_type: don.relationships.donor.blood_type.name,
 						volume: don.attributes.volume,
 						stage: don.attributes.stage,
-						event: don.attributes.event,
+						event: "n/a",
 					};
 				});
 

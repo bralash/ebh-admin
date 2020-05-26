@@ -22,7 +22,12 @@ class BloodRequest extends Model
 
     public function requester()
     {
-        return $this->belongsTo(User::class, 'requested_by');
+		return $this->belongsTo(User::class, 'requested_by')
+			->withDefault([
+				'name' => 'Unknown User',
+				'account_type' => 1,
+				'phone' => 'n/a',
+			]);
     }
 
     public function location()

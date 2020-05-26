@@ -16,7 +16,7 @@ export default {
 					name: "Blood Requests",
 					value: 0,
 					color: "primary",
-					icon: "opacity",
+					icon: "water",
 				},
 			],
 			requests: [],
@@ -36,12 +36,14 @@ export default {
 		this.$dash.resource("blood_requests").get("", (response) => {
 			if (response.data) {
 				const requests = response.data.map((request) => {
+					const rel = request.relationships;
+
 					return {
-						requested_by: request.relationships.requester.name,
-						phone: request.relationships.requester.phone,
-						community: request.relationships.location.name,
-						blood_type: request.relationships.blood_type.name,
-						donations: request.relationships.donations.length,
+						requested_by: rel.requester.name,
+						phone: rel.requester.phone,
+						community: rel.location.name,
+						blood_type: rel.blood_type.name,
+						donations: rel.donations.length,
 					};
 				});
 

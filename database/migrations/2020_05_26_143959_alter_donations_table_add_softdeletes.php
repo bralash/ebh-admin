@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AlterBloodRequestsTable extends Migration
+class AlterDonationsTableAddSoftdeletes extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,13 @@ class AlterBloodRequestsTable extends Migration
      */
     public function up()
     {
-        Schema::table('blood_requests', function (Blueprint $table) {
+		$tables = ['users', 'donations', 'donors'];
 
-        });
+		foreach ($tables as $key => $tablename) {
+			Schema::table($tablename, function (Blueprint $table) {
+				$table->softDeletes();
+			});
+		}
     }
 
     /**

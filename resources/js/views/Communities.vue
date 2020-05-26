@@ -18,9 +18,9 @@ export default {
 			stats: [
 				{
 					name: "Communities",
-					color: "grey darken-2",
+					color: "grey darken-4",
 					value: 0,
-					icon: "place",
+					icon: "map-marker",
 				},
 			],
 			communities: [],

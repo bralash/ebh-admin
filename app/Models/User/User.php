@@ -4,12 +4,13 @@ namespace App\Models\User;
 
 use App\Models\Donation\Donor;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use Notifiable, SoftDeletes;
 
     // Errors
     const ERROR_NOT_FOUND = 2000;

@@ -23,7 +23,7 @@ class CreateDonationsTable extends Migration
             $table->string('donation_uid', 5);
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
-
+			$table->softDeletes();
             $table->foreign('donor_id')->references('id')->on('donors')->onDelete('cascade');
         });
     }
