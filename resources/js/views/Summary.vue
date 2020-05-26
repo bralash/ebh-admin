@@ -46,19 +46,19 @@ export default {
 			stats: [
 				{
 					color: "blue",
-					icon: "people",
+					icon: "account-multiple",
 				},
 				{
 					color: "green",
-					icon: "person",
+					icon: "account-arrow-right",
 				},
 				{
 					color: "red",
-					icon: "opacity",
+					icon: "water",
 				},
 				{
 					color: "green darken-1",
-					icon: "eco",
+					icon: "blood-bag",
 				},
 			],
 		};

@@ -6,6 +6,14 @@
 		class="elevation-1"
 		:loading="loading"
 	>
+		<template v-slot:item.actions="{ item }">
+			<v-icon small class="mr-2" @click="emitEdit(item)">
+				mdi-pencil
+			</v-icon>
+			<v-icon small @click="emitDelete(item)">
+				mdi-delete
+			</v-icon>
+		</template>
 	</v-data-table>
 </template>
 
@@ -34,14 +42,12 @@ export default {
 		options: "onOptionsChanged",
 	},
 	methods: {
-		onOptionsChanged() {
-			// const sort: { [key]  } = {};
-			// for (const i in this.options.sortBy) {
-			// 	sort[this.options.sortBy[i]] = this.options.sortDesc[i]
-			// 		? "desc"
-			// 		: "asc";
-			// }
-			// this.sort = sort;
+		emitEdit: function (item) {
+			this.$emit("init-edit", item);
+		},
+
+		emitDelete: function (item) {
+			this.$emit("init-delete", item);
 		},
 	},
 };

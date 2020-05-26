@@ -20,7 +20,7 @@
 						:color="stat.color"
 						class="stat-icon-wrap"
 					>
-						<v-icon color="white">{{ stat.icon }}</v-icon>
+						<v-icon color="white">mdi-{{ stat.icon }}</v-icon>
 					</v-list-item-avatar>
 				</v-list-item>
 			</v-card>

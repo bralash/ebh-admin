@@ -11,14 +11,18 @@
 					>
 						User Profile
 					</v-card-title>
-					<v-form id="new-user-form">
+					<v-form ref="newUser" id="new-user-form">
 						<v-card-text>
 							<v-text-field
 								label="Name"
 								name="name"
 								required
 							></v-text-field>
-							<v-text-field label="Phone" required></v-text-field>
+							<v-text-field
+								label="Phone"
+								name="phone"
+								required
+							></v-text-field>
 							<v-text-field
 								label="Password"
 								type="password"
@@ -28,43 +32,64 @@
 							<v-select
 								:items="userTypeSelect"
 								label="Type"
+								name="type"
+								filled
 								required
 							></v-select>
 						</v-card-text>
 						<v-card-actions>
 							<v-spacer></v-spacer>
-							<v-btn
-								color="blue darken-1"
-								text
-								@click="dialog = false"
+							<v-btn color="black" text @click="dialog = false"
 								>Close</v-btn
 							>
-							<v-btn color="blue darken-1" type="submit"
+							<v-btn
+								:loading="requesting"
+								color="primary"
+								type="submit"
 								>Save</v-btn
 							>
 						</v-card-actions>
 					</v-form>
 				</v-card>
 			</v-dialog>
+			<delete-dialog
+				:show="showDeleteDialog"
+				:toDelete="activeResource.name"
+				resourceType="User"
+				@delete="deleteResource"
+			></delete-dialog>
 		</template>
 		<stat-card :stats="stats"></stat-card>
-		<Table :headers="headers" :items="users" :loading="loading"></Table>
+		<Table
+			:headers="headers"
+			:items="users"
+			:loading="loading"
+			@init-delete="initDelete"
+		>
+		</Table>
+		<toast :show="toast" :text="toastText"></toast>
 	</page>
 </template>
 
 <script>
+import { NotificationMixin } from "../mixins/default";
+
 export default {
 	name: "Users",
+	mixins: [NotificationMixin],
 	data() {
 		return {
 			dialog: false,
 			loading: true,
+			requesting: false,
+			showDeleteDialog: false,
+			activeResource: { name: null },
 			stats: [
 				{
 					name: "Users registered",
 					value: 0,
 					color: "blue",
-					icon: "people",
+					icon: "account-multiple",
 				},
 			],
 			users: [],
@@ -72,6 +97,7 @@ export default {
 				{ text: "Name", value: "name" },
 				{ text: "Phone", value: "phone" },
 				{ text: "Type", value: "user_type" },
+				{ text: "Actions", value: "actions", sortable: false },
 			],
 			userTypeSelect: [
 				{ text: "General", value: 1 },
@@ -113,13 +139,78 @@ export default {
 	},
 
 	mounted() {
-		this.$dash.submit(
+		const $comp = this;
+
+		this.$dash.submitAll(
 			"new-user-form",
 			(e, formdata, action) => {
-				console.log(formdata);
+				const type = this.$dash.select("[name=type]").value;
+				if (type == "") {
+					$comp.notify("The type field is required");
+					return;
+				}
+
+				$comp.requesting = true;
+				// API request
+				this.$dash.resource("users").create(
+					formdata,
+					(response) => {
+						if (response.data) {
+							$comp.notify("User created successfully");
+							this.$refs.newUser.reset();
+							$comp.dialog = false;
+
+							let id, name, phone, user_type;
+							$comp.users.push(
+								({
+									id,
+									name,
+									phone,
+									user_type,
+								} = response.data.attributes)
+							);
+
+							$comp.stats[0].value = $comp.users.length;
+						}
+						$comp.requesting = false;
+					},
+					{
+						error({ errors }) {
+							$comp.notify(errors[0].detail);
+							$comp.requesting = false;
+						},
+					}
+				);
 			},
-			["*"]
+			(e) => {
+				$comp.notify("The " + e.inputs[0].name + " is required");
+			}
 		);
+	},
+
+	methods: {
+		initDelete(item) {
+			this.showDeleteDialog = true;
+			this.activeResource = item;
+		},
+
+		deleteResource() {
+			const id = this.activeResource.id,
+				$comp = this;
+
+			this.$dash.resource("users").delete(id, (response) => {
+				if (!response.errors) {
+					this.showDeleteDialog = false;
+					$comp.notify(response.meta.message);
+					// Remove from local state
+					this.users.splice(
+						this.users.findIndex((el) => el.id == id),
+						1
+					);
+					$comp.stats[0].value = $comp.users.length;
+				}
+			});
+		},
 	},
 };
 </script>

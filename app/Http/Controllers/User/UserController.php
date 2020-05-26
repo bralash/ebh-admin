@@ -101,4 +101,22 @@ class UserController extends Controller
         $this->response->addData($user->id, 'users', $user, ['name', 'phone', 'account_type', 'account_id', 'access'], ['donor']);
 		return $this->response->ok();
 	}
+
+	/**
+	 * Delete resource from db
+	 *
+	 * @param Request $request
+	 * @param User $user
+	 * @return ApiResponse
+	 */
+	public function destroy(Request $request, User $user)
+	{
+		if ($user->delete()) {
+			$this->response->addSuccessMeta('User deleted successfully!');
+			return $this->response->ok();
+		}
+		else {
+			return $this->response->make('SERVICE_UNAVAILABLE');
+		}
+	}
 }

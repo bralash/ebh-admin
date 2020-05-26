@@ -2,8 +2,11 @@ import Vue from "vue";
 import Dash from "./vendor/dash";
 import Login from "./views/Login.vue";
 import vuetify from "./plugins/vuetify";
+import Toast from "./components/Toast.vue";
 
-// Vue instantiation
+Vue.component("toast", Toast);
+
+// Vue
 new Vue({
 	el: "#app",
 	vuetify,
@@ -12,9 +15,9 @@ new Vue({
 
 Dash.init({
 	baseResourceURL: Dash.select("#login-form").action,
-	requestHeaders: [],
+	requestHeaders: {
+		"X-CSRF-TOKEN": Dash.select("meta[name=csrf-token]").getAttribute(
+			"content"
+		),
+	},
 });
-
-Dash.config.requestHeaders["X-CSRF-TOKEN"] = Dash.select(
-	"meta[name=csrf-token]"
-).getAttribute("content");

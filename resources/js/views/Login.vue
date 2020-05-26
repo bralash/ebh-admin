@@ -16,7 +16,7 @@
 									<v-text-field
 										label="Phone"
 										name="phone"
-										prepend-icon="phone"
+										prepend-icon="mdi-phone"
 										type="text"
 									/>
 
@@ -24,18 +24,16 @@
 										id="password"
 										label="Password"
 										name="password"
-										prepend-icon="lock"
+										prepend-icon="mdi-lock"
 										type="password"
 									/>
 
-									<v-btn type="submit" color="primary"
+									<v-btn
+										:loading="loading"
+										type="submit"
+										color="primary"
 										>Login</v-btn
 									>
-									<v-progress-circular
-										v-show="state.loading"
-										:indeterminate="state.loading"
-										color="primary"
-									></v-progress-circular>
 								</v-form>
 							</v-card-text>
 							<v-card-actions>
@@ -45,12 +43,7 @@
 					</v-col>
 				</v-row>
 			</v-container>
-			<v-snackbar v-model="snackbar">
-				{{ snackbarText }}
-				<v-btn color="pink" text @click="hideSnackbar">
-					Close
-				</v-btn>
-			</v-snackbar>
+			<toast :show="toast" :text="toastText"></toast>
 		</v-content>
 	</v-app>
 </template>
@@ -66,51 +59,41 @@ export default {
 
 	data() {
 		return {
-			state: {
-				loading: false,
-			},
-			snackbar: false,
-			snackbarText: "",
+			loading: false,
+			toast: false,
+			toastText: "",
 		};
 	},
 
 	mounted() {
-		const $component = this;
+		const $comp = this;
 
-		// Form submit handler
 		Dash.submit("login-form", (e, formdata, action) => {
-			$component.state.loading = true;
+			$comp.loading = true;
 
-			// API call to login
+			// API request
 			Dash.post(
 				"/login",
 				formdata,
 				// Success
 				(response) => {
-					$component.snackbarText = "Loading dashboard...";
+					$comp.toastText = "Loading dashboard...";
 					// Show toast
-					$component.snackbar = true;
-
+					$comp.toast = true;
 					Dash.reload();
 				},
 				// config
 				{
 					error(response) {
-						$component.snackbarText = response.errors[0].detail;
+						$comp.toastText = response.errors[0].detail;
 						// Show toast
-						$component.snackbar = true;
+						$comp.toast = true;
 						// Hide loader
-						$component.state.loading = false;
+						$comp.loading = false;
 					},
 				}
 			);
 		});
-	},
-
-	methods: {
-		hideSnackbar() {
-			this.snackbar = false;
-		},
 	},
 };
 </script>

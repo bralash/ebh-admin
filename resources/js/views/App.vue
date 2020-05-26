@@ -9,7 +9,7 @@
 					active-class=""
 				>
 					<v-list-item-action>
-						<v-icon>{{ item.icon }}</v-icon>
+						<v-icon>mdi-{{ item.icon }}</v-icon>
 					</v-list-item-action>
 					<v-list-item-content>
 						<v-list-item-title>
@@ -22,7 +22,9 @@
 				>
 				<v-list-item link>
 					<v-list-item-action>
-						<v-icon color="grey darken-1">mdi-settings</v-icon>
+						<v-icon color="grey darken-1"
+							>mdi-logout-variant</v-icon
+						>
 					</v-list-item-action>
 					<v-list-item-title
 						class="grey--text text--darken-1"
@@ -60,13 +62,13 @@ export default {
 	data: () => ({
 		drawer: null,
 		items: [
-			{ icon: "dashboard", text: "Summary", url: "/" },
-			{ icon: "people", text: "Users", url: "users" },
-			{ icon: "person", text: "Donors", url: "donors" },
-			{ icon: "opacity", text: "Blood Requests", url: "requests" },
-			{ icon: "eco", text: "Donations", url: "donations" },
-			{ icon: "place", text: "Communities", url: "communities" },
-			{ icon: "star_outline", text: "Badges", url: "badges" },
+			{ icon: "view-dashboard", text: "Summary", url: "/" },
+			{ icon: "account-multiple", text: "Users", url: "users" },
+			{ icon: "account-arrow-right", text: "Donors", url: "donors" },
+			{ icon: "water", text: "Blood Requests", url: "requests" },
+			{ icon: "blood-bag", text: "Donations", url: "donations" },
+			{ icon: "map-marker", text: "Communities", url: "communities" },
+			{ icon: "star-outline", text: "Badges", url: "badges" },
 		],
 		items2: [{ picture: 28, text: "Joseph" }],
 	}),

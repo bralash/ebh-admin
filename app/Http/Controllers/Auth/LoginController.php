@@ -23,7 +23,6 @@ class LoginController extends Controller
     | to conveniently provide its functionality to your applications.
     |
     */
-
     use AuthenticatesUsers, ReturnsApiResponse;
 
     /**
@@ -40,7 +39,7 @@ class LoginController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest')->except('logout');
+        $this->middleware('guest')->except('logoutUser');
         $this->response = new ApiResponse();
     }
 
@@ -101,9 +100,10 @@ class LoginController extends Controller
 				$request->session()->regenerate();
 				$this->clearLoginAttempts($request);
 
-				// Returns response
 				return $this->response->ok()->withCookie(cookie()->forever('access_token', $user->access->first()->api_key));
 			}
+
+			return $this->response->forbidden('Access denied');
 		} catch (\Throwable $e) {
 			if ($e->getCode() === 0) {
 				return $this->response->ok();
@@ -123,5 +123,11 @@ class LoginController extends Controller
     {
         // Return an unauthorized response
         return $this->response->unauthorized(User::ERROR_NOT_FOUND, 'Wrong user credentials');
-    }
+	}
+
+	public function logoutUser(Request $request)
+	{
+		cookie()->queue(cookie()->forget('access_token'));
+		return self::logout($request);
+	}
 }

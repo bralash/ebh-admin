@@ -3,15 +3,19 @@ import App from "./views/App.vue";
 import vuetify from "./plugins/vuetify";
 import router from "./plugins/router";
 import Dash from "./plugins/dash";
+import store from "./store";
 import Page from "./components/Page.vue";
 import StatCard from "./components/StatCard.vue";
 import Table from "./components/Table.vue";
-import store from "./store";
+import Toast from "./components/Toast.vue";
+import DeleteDialog from "./components/DeleteDialog.vue";
 
 // Global components
 Vue.component("page", Page);
 Vue.component("stat-card", StatCard);
 Vue.component("Table", Table);
+Vue.component("toast", Toast);
+Vue.component("delete-dialog", DeleteDialog);
 
 // Install dashjs plugin
 Vue.use(Dash, {

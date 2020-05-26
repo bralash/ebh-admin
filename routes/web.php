@@ -13,13 +13,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return redirect('app');
-})->middleware('auth');
+Route::get('/', 'AppController@app')->middleware('auth');
 
-// /app
-Route::get('app', 'AppController@app')->middleware('auth');
+// Route::get('app', 'AppController@app')->middleware('auth');
 
-Route::get('logout', 'Auth\LoginController@logout');
+Route::get('logout', 'Auth\LoginController@logoutUser');
 
 Auth::routes();
