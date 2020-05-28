@@ -72,18 +72,14 @@
 </template>
 
 <script>
-import { NotificationMixin } from "../mixins/default";
+import { ResourceMixin } from "../mixins/default";
 
 export default {
 	name: "Users",
-	mixins: [NotificationMixin],
+	mixins: [ResourceMixin],
 	data() {
 		return {
-			dialog: false,
 			loading: true,
-			requesting: false,
-			showDeleteDialog: false,
-			activeResource: { name: null },
 			stats: [
 				{
 					name: "Users registered",
