@@ -32,6 +32,7 @@
 										:loading="loading"
 										type="submit"
 										color="primary"
+										@click.prevent="submit"
 										>Login</v-btn
 									>
 								</v-form>
@@ -65,35 +66,34 @@ export default {
 		};
 	},
 
-	mounted() {
-		const $comp = this;
+	methods: {
+		submit() {
+			Dash.submit("login-form", (formdata) => {
+				this.loading = true;
 
-		Dash.submit("login-form", (e, formdata, action) => {
-			$comp.loading = true;
-
-			// API request
-			Dash.post(
-				"/login",
-				formdata,
-				// Success
-				(response) => {
-					$comp.toastText = "Loading dashboard...";
-					// Show toast
-					$comp.toast = true;
-					Dash.reload();
-				},
-				// config
-				{
-					error(response) {
-						$comp.toastText = response.errors[0].detail;
+				Dash.post(
+					"/login",
+					formdata,
+					// Success
+					(response) => {
+						this.toastText = "Loading dashboard...";
 						// Show toast
-						$comp.toast = true;
-						// Hide loader
-						$comp.loading = false;
+						this.toast = true;
+						Dash.reload();
 					},
-				}
-			);
-		});
+					// config
+					{
+						error(response) {
+							this.toastText = response.errors[0].detail;
+							// Show toast
+							this.toast = true;
+							// Hide loader
+							this.loading = false;
+						},
+					}
+				);
+			});
+		},
 	},
 };
 </script>
