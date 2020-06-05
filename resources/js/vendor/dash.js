@@ -834,7 +834,7 @@ var Dash = {
 			}
 		}
 
-		callback.call(formNode, e, serializeData(formNode), formNode.action);
+		callback.call(formNode, serializeData(formNode), formNode.action);
 		// });
 	},
 

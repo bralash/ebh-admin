@@ -102,6 +102,20 @@ class UserController extends Controller
 		return $this->response->ok();
 	}
 
+	public function update(Request $request, User $user)
+	{
+		if (!$request->user->isAdmin)  	return $this->response->forbidden('You can\'t perform this action');
+
+		$user->update([
+			'name' => $request->name,
+			'phone' => $request->phone,
+			'password' => bcrypt($request->password)
+		]);
+
+		$this->response->addSuccessMeta('User updated successfully!');
+		return $this->response->ok();
+	}
+
 	/**
 	 * Delete resource from db
 	 *

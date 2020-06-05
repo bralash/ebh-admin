@@ -33,7 +33,7 @@
 							></v-text-field>
 
 							<v-select
-								v-if="!activeResource"
+								v-if="!activeResource.id"
 								:items="userTypeSelect"
 								label="Type"
 								name="type"
@@ -53,7 +53,7 @@
 								:loading="requesting"
 								color="primary"
 								type="submit"
-								@click="mutateResource"
+								@click.prevent="mutateResource"
 								>Save</v-btn
 							>
 						</v-card-actions>
@@ -123,8 +123,6 @@ export default {
 	},
 
 	created() {
-		console.log(this.activeResource);
-
 		const c = this;
 
 		this.$dash.resource("users").get("", (response) => {
@@ -165,16 +163,26 @@ export default {
 					this.$refs.newUserForm.$el
 				);
 
-			if (this.activeResource.hasOwnProperty) {
+			if (this.activeResource.hasOwnProperty("id")) {
 				// Update user
-				this.$dash.resource("users").update(id, data, (response) => {
-					this.showEditDialog = false;
-				});
+				this.$dash.resource("users").update(
+					id,
+					data,
+					(response) => {
+						if (!response.error) {
+							this.showEditDialog = false;
+							this.notify("User updated succefully");
+						}
+					},
+					{
+						usePost: true,
+					}
+				);
 			} else {
 				// Create user
 				this.$dash.submitAll(
 					"new-user-form",
-					(e, formdata) => {
+					(formdata) => {
 						const type = this.$dash.select("[name=type]").value;
 
 						if (type == "") {

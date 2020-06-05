@@ -6,7 +6,7 @@ export const ResourceMixin = {
 			requesting: false,
 			showDeleteDialog: false,
 			showEditDialog: false,
-			activeResource: null,
+			activeResource: {},
 		};
 	},
 	methods: {
