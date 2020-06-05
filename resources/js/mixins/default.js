@@ -1,15 +1,25 @@
 export const ResourceMixin = {
 	data() {
 		return {
-			dialog: false,
 			toast: false,
 			toastText: "",
 			requesting: false,
 			showDeleteDialog: false,
-			activeResource: { name: null },
+			showEditDialog: false,
+			activeResource: null,
 		};
 	},
 	methods: {
+		initEdit(item) {
+			this.showEditDialog = true;
+			this.activeResource = item;
+		},
+
+		initDelete(item) {
+			this.showDeleteDialog = true;
+			this.activeResource = item;
+		},
+
 		notify(message) {
 			const $comp = this;
 

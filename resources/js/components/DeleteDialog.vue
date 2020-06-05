@@ -1,5 +1,5 @@
 <template>
-	<v-dialog v-model="show" max-width="290">
+	<v-dialog :value="value" @input="emitClose" max-width="290">
 		<v-card>
 			<v-card-title class="headline"
 				>Delete {{ resourceType }}</v-card-title
@@ -11,7 +11,7 @@
 
 			<v-card-actions>
 				<v-spacer></v-spacer>
-				<v-btn color="grey darken-1" @click="show = false" text>
+				<v-btn color="grey darken-1" @click="emitClose" text>
 					Cancel
 				</v-btn>
 				<v-btn color="red" @click="emitDelete" text>
@@ -28,16 +28,17 @@ export default {
 	props: {
 		resourceType: String,
 		toDelete: String,
-		show: Boolean,
+		value: Boolean,
 	},
 	data() {
-		return {
-			showSelf: this.show || true,
-		};
+		return {};
 	},
 	methods: {
 		emitDelete() {
 			this.$emit("delete");
+		},
+		emitClose() {
+			this.$emit("input", false);
 		},
 	},
 };

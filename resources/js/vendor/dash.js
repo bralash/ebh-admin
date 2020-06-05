@@ -790,46 +790,30 @@ var Dash = {
 			serializeData = this.form.serializeData;
 
 		// Bind submit event to form element
-		Dash.bind("submit", "body", "#" + formId, function (e) {
-			e.preventDefault();
-			var formNode = this;
+		// Dash.bind("submit", "body", "#" + formId, function (e) {
+		// e.preventDefault();
+		var formNode = this.select("#" + formId);
 
-			if (requiredInputs) {
-				if (Array.isArray(requiredInputs)) {
-					if (
-						requiredInputs.length == 1 &&
-						requiredInputs[0] == "*"
-					) {
-						// Get all input elements
-						var inputNodes = formNode.querySelectorAll(
-							"[name]:not(.not-required)"
-						);
-					} else {
-						var inputNodes = requiredInputs.map((input) => {
-							// Get required input nodes from DOM
-							return formNode.querySelector(
-								"[name=" + input + "]"
-							);
-						});
-					}
-					let testEmptyInputs = emptyInputs(inputNodes);
-
-					if (testEmptyInputs.empty) {
-						// throw exception DashFormInputsException
-						let e = new DashFormInputsException(
-							"Some required inputs empty",
-							testEmptyInputs.input
-						);
-						if (typeof failedValidation == "function")
-							failedValidation.call(formNode, e);
-						else console.warn(e);
-
-						return;
-					}
+		if (requiredInputs) {
+			if (Array.isArray(requiredInputs)) {
+				if (requiredInputs.length == 1 && requiredInputs[0] == "*") {
+					// Get all input elements
+					var inputNodes = formNode.querySelectorAll(
+						"[name]:not(.not-required)"
+					);
 				} else {
+					var inputNodes = requiredInputs.map((input) => {
+						// Get required input nodes from DOM
+						return formNode.querySelector("[name=" + input + "]");
+					});
+				}
+				let testEmptyInputs = emptyInputs(inputNodes);
+
+				if (testEmptyInputs.empty) {
 					// throw exception DashFormInputsException
 					let e = new DashFormInputsException(
-						"Invalid args supplied for required inputs"
+						"Some required inputs empty",
+						testEmptyInputs.input
 					);
 					if (typeof failedValidation == "function")
 						failedValidation.call(formNode, e);
@@ -837,15 +821,21 @@ var Dash = {
 
 					return;
 				}
-			}
+			} else {
+				// throw exception DashFormInputsException
+				let e = new DashFormInputsException(
+					"Invalid args supplied for required inputs"
+				);
+				if (typeof failedValidation == "function")
+					failedValidation.call(formNode, e);
+				else console.warn(e);
 
-			callback.call(
-				formNode,
-				e,
-				serializeData(formNode),
-				formNode.action
-			);
-		});
+				return;
+			}
+		}
+
+		callback.call(formNode, e, serializeData(formNode), formNode.action);
+		// });
 	},
 
 	submitAll: function (formId, callback, failedValidation) {

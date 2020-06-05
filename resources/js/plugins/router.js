@@ -1,13 +1,13 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 
-const Summary = () => import("../views/Summary.vue");
-const Users = () => import("../views/Users.vue");
-const Donors = () => import("../views/Donors.vue");
-const BloodRequests = () => import("../views/BloodRequests.vue");
-const Donations = () => import("../views/Donations.vue");
-const Communities = () => import("../views/Communities.vue");
-const Badges = () => import("../views/Badges.vue");
+import Summary from "../views/Summary.vue";
+import Users from "../views/Users.vue";
+import Donors from "../views/Donors.vue";
+import BloodRequests from "../views/BloodRequests.vue";
+import Donations from "../views/Donations.vue";
+import Communities from "../views/Communities.vue";
+import Badges from "../views/Badges.vue";
 
 Vue.use(VueRouter);
 

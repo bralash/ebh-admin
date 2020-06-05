@@ -1,7 +1,7 @@
 <template>
 	<page name="Users" desc="Manage all user accounts">
 		<template v-slot:tools>
-			<v-dialog v-model="dialog" persistent max-width="600px">
+			<v-dialog v-model="showEditDialog" persistent max-width="600px">
 				<template v-slot:activator="{ on }">
 					<v-btn color="primary" v-on="on">New </v-btn>
 				</template>
@@ -9,18 +9,20 @@
 					<v-card-title
 						class="headline font-weight-bold grey lighten-2"
 					>
-						User Profile
+						User Details
 					</v-card-title>
-					<v-form ref="newUser" id="new-user-form">
+					<v-form ref="newUserForm" id="new-user-form">
 						<v-card-text>
 							<v-text-field
 								label="Name"
 								name="name"
+								v-model="activeResource.name"
 								required
 							></v-text-field>
 							<v-text-field
 								label="Phone"
 								name="phone"
+								v-model="activeResource.phone"
 								required
 							></v-text-field>
 							<v-text-field
@@ -29,7 +31,9 @@
 								name="password"
 								required
 							></v-text-field>
+
 							<v-select
+								v-if="!activeResource"
 								:items="userTypeSelect"
 								label="Type"
 								name="type"
@@ -39,13 +43,17 @@
 						</v-card-text>
 						<v-card-actions>
 							<v-spacer></v-spacer>
-							<v-btn color="black" text @click="dialog = false"
+							<v-btn
+								color="black"
+								text
+								@click="showEditDialog = false"
 								>Close</v-btn
 							>
 							<v-btn
 								:loading="requesting"
 								color="primary"
 								type="submit"
+								@click="mutateResource"
 								>Save</v-btn
 							>
 						</v-card-actions>
@@ -53,7 +61,7 @@
 				</v-card>
 			</v-dialog>
 			<delete-dialog
-				:show="showDeleteDialog"
+				v-model="showDeleteDialog"
 				:toDelete="activeResource.name"
 				resourceType="User"
 				@delete="deleteResource"
@@ -65,6 +73,7 @@
 			:items="users"
 			:loading="loading"
 			@init-delete="initDelete"
+			@init-edit="initEdit"
 		>
 		</Table>
 		<toast :show="toast" :text="toastText"></toast>
@@ -102,10 +111,6 @@ export default {
 					value: 5,
 				},
 				{
-					text: "Donor",
-					value: 2,
-				},
-				{
 					text: "Blood bank contact",
 					value: 3,
 				},
@@ -118,6 +123,8 @@ export default {
 	},
 
 	created() {
+		console.log(this.activeResource);
+
 		const c = this;
 
 		this.$dash.resource("users").get("", (response) => {
@@ -134,78 +141,84 @@ export default {
 		});
 	},
 
-	mounted() {
-		const $comp = this;
-
-		this.$dash.submitAll(
-			"new-user-form",
-			(e, formdata, action) => {
-				const type = this.$dash.select("[name=type]").value;
-				if (type == "") {
-					$comp.notify("The type field is required");
-					return;
-				}
-
-				$comp.requesting = true;
-				// API request
-				this.$dash.resource("users").create(
-					formdata,
-					(response) => {
-						if (response.data) {
-							$comp.notify("User created successfully");
-							this.$refs.newUser.reset();
-							$comp.dialog = false;
-
-							let id, name, phone, user_type;
-							$comp.users.push(
-								({
-									id,
-									name,
-									phone,
-									user_type,
-								} = response.data.attributes)
-							);
-
-							$comp.stats[0].value = $comp.users.length;
-						}
-						$comp.requesting = false;
-					},
-					{
-						error({ errors }) {
-							$comp.notify(errors[0].detail);
-							$comp.requesting = false;
-						},
-					}
-				);
-			},
-			(e) => {
-				$comp.notify("The " + e.inputs[0].name + " is required");
-			}
-		);
-	},
-
 	methods: {
-		initDelete(item) {
-			this.showDeleteDialog = true;
-			this.activeResource = item;
-		},
-
 		deleteResource() {
-			const id = this.activeResource.id,
-				$comp = this;
+			const id = this.activeResource.id;
 
 			this.$dash.resource("users").delete(id, (response) => {
 				if (!response.errors) {
 					this.showDeleteDialog = false;
-					$comp.notify(response.meta.message);
+					this.notify(response.meta.message);
 					// Remove from local state
 					this.users.splice(
 						this.users.findIndex((el) => el.id == id),
 						1
 					);
-					$comp.stats[0].value = $comp.users.length;
+					this.stats[0].value = this.users.length;
 				}
 			});
+		},
+
+		mutateResource() {
+			const id = this.activeResource.id,
+				data = this.$dash.form.serializeData(
+					this.$refs.newUserForm.$el
+				);
+
+			if (this.activeResource.hasOwnProperty) {
+				// Update user
+				this.$dash.resource("users").update(id, data, (response) => {
+					this.showEditDialog = false;
+				});
+			} else {
+				// Create user
+				this.$dash.submitAll(
+					"new-user-form",
+					(e, formdata) => {
+						const type = this.$dash.select("[name=type]").value;
+
+						if (type == "") {
+							this.notify("The type field is required");
+							return;
+						}
+
+						this.requesting = true;
+						// API request
+						this.$dash.resource("users").create(
+							formdata,
+							(response) => {
+								if (response.data) {
+									this.notify("User created successfully");
+									this.$refs.newUserForm.reset();
+									this.showEditDialog = false;
+
+									let id, name, phone, user_type;
+									this.users.push(
+										({
+											id,
+											name,
+											phone,
+											user_type,
+										} = response.data.attributes)
+									);
+
+									this.stats[0].value = this.users.length;
+								}
+								this.requesting = false;
+							},
+							{
+								error({ errors }) {
+									this.notify(errors[0].detail);
+									this.requesting = false;
+								},
+							}
+						);
+					},
+					(e) => {
+						this.notify("The " + e.inputs[0].name + " is required");
+					}
+				);
+			}
 		},
 	},
 };
