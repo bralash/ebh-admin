@@ -69,6 +69,7 @@ export default {
 			{ icon: "blood-bag", text: "Donations", url: "donations" },
 			{ icon: "map-marker", text: "Communities", url: "communities" },
 			{ icon: "star-outline", text: "Badges", url: "badges" },
+			{ icon: "pen", text: "CMS", url: "cms" },
 		],
 		items2: [{ picture: 28, text: "Joseph" }],
 	}),

@@ -8,6 +8,7 @@ import BloodRequests from "../views/BloodRequests.vue";
 import Donations from "../views/Donations.vue";
 import Communities from "../views/Communities.vue";
 import Badges from "../views/Badges.vue";
+import CMS from "../views/CMS.vue";
 
 Vue.use(VueRouter);
 
@@ -48,6 +49,11 @@ export default new VueRouter({
 			path: "/badges",
 			component: Badges,
 			name: "badges",
+		},
+		{
+			path: "/cms",
+			component: CMS,
+			name: "cms",
 		},
 	],
 });
