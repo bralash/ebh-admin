@@ -51,7 +51,19 @@ class LoginController extends Controller
     public function username()
     {
         return 'phone';
-    }
+	}
+
+	/**
+     * Get the needed authorization credentials from the request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
+    protected function credentials(Request $request)
+    {
+		$credentials = array_merge($request->only($this->username(), 'password'), ['account_type' => User::TYPE_ADMIN]);
+		return $credentials;
+	}
 
     /**
      * Validates request inputs, checks against rules
@@ -93,6 +105,7 @@ class LoginController extends Controller
         $this->response->addData($user->id, 'users', $user, ['name', 'phone', 'account_type', 'account_id', 'access'], ['donor']);
 
 		try {
+			// Attempt to start session
 			$request->session();
 
 			if ($user->isAdmin) {

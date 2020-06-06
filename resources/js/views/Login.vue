@@ -44,20 +44,21 @@
 					</v-col>
 				</v-row>
 			</v-container>
-			<toast :show="toast" :text="toastText"></toast>
+			<toast v-model="toast" :text="toastText"></toast>
 		</v-content>
 	</v-app>
 </template>
 
 <script>
 import Dash from "../vendor/dash";
+import { ResourceMixin } from "../mixins/default";
 
 export default {
 	name: "Login",
 	props: {
 		source: String,
 	},
-
+	mixins: [ResourceMixin],
 	data() {
 		return {
 			loading: false,
@@ -65,34 +66,41 @@ export default {
 			toastText: "",
 		};
 	},
-
 	methods: {
 		submit() {
-			Dash.submit("login-form", (formdata) => {
-				this.loading = true;
+			Dash.submitAll(
+				"login-form",
+				(formdata) => {
+					this.loading = true;
 
-				Dash.post(
-					"/login",
-					formdata,
-					// Success
-					(response) => {
-						this.toastText = "Loading dashboard...";
-						// Show toast
-						this.toast = true;
-						Dash.reload();
-					},
-					// config
-					{
-						error(response) {
-							this.toastText = response.errors[0].detail;
-							// Show toast
-							this.toast = true;
-							// Hide loader
-							this.loading = false;
+					Dash.post(
+						"/login",
+						formdata,
+						// Success
+						(response) => {
+							if (response.data) {
+								this.toastText = "Loading dashboard...";
+								this.toast = true;
+
+								Dash.reload();
+							}
 						},
-					}
-				);
-			});
+						// config
+						{
+							error: (response) => {
+								this.toastText = response.errors[0].detail;
+								this.toast = true;
+								this.loading = false;
+							},
+						}
+					);
+				},
+				(e) => {
+					this.notify(
+						"The " + e.inputs[0].name + " field is required"
+					);
+				}
+			);
 		},
 	},
 };

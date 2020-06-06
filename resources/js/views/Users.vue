@@ -76,7 +76,7 @@
 			@init-edit="initEdit"
 		>
 		</Table>
-		<toast :show="toast" :text="toastText"></toast>
+		<toast v-model="toast" :text="toastText"></toast>
 	</page>
 </template>
 
