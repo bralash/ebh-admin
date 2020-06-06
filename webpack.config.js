@@ -77,7 +77,7 @@ const config = {
 			chunkFilename: "[id].css",
 		}),
 		new webpack.HotModuleReplacementPlugin(),
-		new BundleAnalyzerPlugin(),
+		// new BundleAnalyzerPlugin(),
 		new VuetifyLoaderPlugin(),
 	],
 
