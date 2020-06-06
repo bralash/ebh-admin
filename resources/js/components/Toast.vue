@@ -1,7 +1,7 @@
 <template>
-	<v-snackbar v-model="show" :timeout="4000" top>
+	<v-snackbar :value="value" @input="emitClose" :timeout="4000" top>
 		{{ text }}
-		<v-btn color="pink" text @click="show = false">
+		<v-btn color="pink" text @click="emitClose">
 			Close
 		</v-btn>
 	</v-snackbar>
@@ -11,8 +11,13 @@
 export default {
 	name: "Toast",
 	props: {
-		show: Boolean,
 		text: String,
+		value: Boolean,
+	},
+	methods: {
+		emitClose() {
+			this.$emit("input", false);
+		},
 	},
 };
 </script>

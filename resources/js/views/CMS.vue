@@ -12,7 +12,7 @@
 				</v-btn>
 			</v-card-actions>
 		</v-card>
-		<toast :show="toast" :text="toastText"></toast>
+		<toast v-model="toast" :text="toastText"></toast>
 	</page>
 </template>
 
