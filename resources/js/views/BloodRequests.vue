@@ -1,13 +1,43 @@
 <template>
 	<page name="Blood Requests" desc="Manage all blood requests">
+		<v-dialog v-model="showEditDialog" max-width="600px">
+			<v-card>
+				<v-card-title class="headline font-weight-bold">
+					Request Details
+				</v-card-title>
+				<v-card-text>
+					<v-list-item two-line>
+						<v-list-item-content>
+							<v-list-item-title>Requested by</v-list-item-title>
+							<v-list-item-subtitle>{{
+								activeResource.requested_by
+							}}</v-list-item-subtitle>
+						</v-list-item-content>
+					</v-list-item>
+
+					<v-list subheader>
+						<v-subheader>Donations</v-subheader>
+					</v-list>
+				</v-card-text>
+			</v-card>
+		</v-dialog>
 		<stat-card :stats="stats"></stat-card>
-		<Table :headers="headers" :items="requests" :loading="loading"></Table>
+		<Table
+			resource="Requests"
+			:headers="headers"
+			:items="requests"
+			:loading="loading"
+			@click:row="showDetailsModal"
+		></Table>
 	</page>
 </template>
 
 <script>
+import { ResourceMixin } from "../mixins/default";
+
 export default {
 	name: "BloodRequests",
+	mixins: [ResourceMixin],
 	data() {
 		return {
 			loading: true,
@@ -28,6 +58,13 @@ export default {
 				{ text: "Donations", value: "donations" },
 			],
 		};
+	},
+
+	methods: {
+		showDetailsModal(item) {
+			this.activeResource = item;
+			this.showEditDialog = true;
+		},
 	},
 
 	created() {

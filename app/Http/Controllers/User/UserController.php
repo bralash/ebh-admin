@@ -13,6 +13,17 @@ class UserController extends Controller
 {
 	use ReturnsApiResponse;
 
+	private function exist()
+	{
+		$this->response->addError([
+			'title' => 'User exists already',
+			'detail' => 'This user is already registered',
+			'status' => ApiResponse::UNPROCESSABLE_ENTITY,
+			'code' => User::ERROR_EXISTS,
+		]);
+
+		return $this->response->make('UNPROCESSABLE_ENTITY');
+	}
 	/**
      * Fetch all donors
      *
@@ -71,21 +82,13 @@ class UserController extends Controller
             // Let's see what went wrong
             switch ($e->getCode()) {
                 case '23000':
-                    $this->response->addError([
-                        'title' => 'User exists already',
-                        'detail' => 'This user is already registered',
-                        'status' => ApiResponse::UNPROCESSABLE_ENTITY,
-                        'code' => User::ERROR_EXISTS,
-                    ]);
-
-                    return $this->response->make('UNPROCESSABLE_ENTITY');
+					return self::exist();
                     break;
 
                 default:
-                    $this->response->addMeta(['success' => false]);
+                    $this->response->addMeta(['success' => false, 'message' => 'Something went wrong']);
                     $this->response->bad();
-
-                break;
+                	break;
             }
         }
 	}
@@ -104,13 +107,27 @@ class UserController extends Controller
 
 	public function update(Request $request, User $user)
 	{
-		if (!$request->user->isAdmin)  	return $this->response->forbidden('You can\'t perform this action');
+		if (!$request->user->isAdmin)
+			return $this->response->forbidden('You can\'t perform this action');
 
-		$user->update([
-			'name' => $request->name,
-			'phone' => $request->phone,
-			'password' => bcrypt($request->password)
-		]);
+		try {
+			$user->update([
+				'name' => $request->name,
+				'phone' => $request->phone,
+				'password' => bcrypt($request->password)
+			]);
+		} catch (\Illuminate\Database\QueryException  $e) {
+			switch ($e->getCode()) {
+				case '23000':
+					return self::exist();
+                    break;
+
+				default:
+					$this->response->addMeta(['success' => false, 'message' => 'Something went wrong']);
+					$this->response->bad();
+					break;
+			}
+		}
 
 		$this->response->addSuccessMeta('User updated successfully!');
 		return $this->response->ok();

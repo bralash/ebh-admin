@@ -11,7 +11,7 @@
 </head>
 <body>
 	<div id="app">Loading...</div>
-	<script src="{{url('js/auth.bundle.js')}}"></script>
-	{{-- <script src="http://localhost:8088/js/auth.bundle.js"></script> --}}
+	{{-- <script src="{{url('js/auth.bundle.js')}}"></script> --}}
+	<script src="http://localhost:8088/js/auth.bundle.js"></script>
 </body>
 </html>

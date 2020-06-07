@@ -124,5 +124,23 @@ class DonorController extends Controller
 
         // Return response
         return $this->response->ok();
-    }
+	}
+
+	/**
+	 * Delete resource from db
+	 *
+	 * @param Request $request
+	 * @param Donor $donor
+	 * @return ApiResponse
+	 */
+	public function destroy(Request $request, Donor $donor)
+	{
+		if ($donor->delete()) {
+			$this->response->addSuccessMeta('Donor deleted successfully!');
+			return $this->response->ok();
+		}
+		else {
+			return $this->response->make('SERVICE_UNAVAILABLE');
+		}
+	}
 }

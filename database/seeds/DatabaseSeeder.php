@@ -14,6 +14,7 @@ class DatabaseSeeder extends Seeder
         // $this->call(UserTableSeeder::class);
         // $this->call(BloodTypeTableSeeder::class);
         // $this->call(CommunityTableSeeder::class);
-        $this->call(BadgeTableSeeder::class);
+        // $this->call(BadgeTableSeeder::class);
+        $this->call(BloodRequestSeeder::class);
     }
 }

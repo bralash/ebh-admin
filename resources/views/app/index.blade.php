@@ -17,8 +17,8 @@
 		<input class="resource-url" type="hidden" value="{{url('api/v1')}}"/>
 		<input class="app-url" type="hidden" value="{{url('/')}}"/>
 	</div>
-	<script src="{{url('js/app.bundle.js')}}"></script>
-	{{-- <script src="http://localhost:8088/js/app.bundle.js"></script> --}}
+	{{-- <script src="{{url('js/app.bundle.js')}}"></script> --}}
+	<script src="http://localhost:8088/js/app.bundle.js"></script>
 </body>
 
 </html>

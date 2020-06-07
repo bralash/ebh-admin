@@ -1,10 +1,8 @@
 <template>
 	<page name="Users" desc="Manage all user accounts">
 		<template v-slot:tools>
-			<v-dialog v-model="showEditDialog" persistent max-width="600px">
-				<template v-slot:activator="{ on }">
-					<v-btn color="primary" v-on="on">New </v-btn>
-				</template>
+			<v-btn color="primary" @click="triggerEditDialog">New</v-btn>
+			<v-dialog v-model="showEditDialog" max-width="600px">
 				<v-card>
 					<v-card-title
 						class="headline font-weight-bold grey lighten-2"
@@ -17,11 +15,13 @@
 								label="Name"
 								name="name"
 								v-model="activeResource.name"
+								maxlength="15"
 								required
 							></v-text-field>
 							<v-text-field
 								label="Phone"
 								name="phone"
+								maxlength="10"
 								v-model="activeResource.phone"
 								required
 							></v-text-field>
@@ -37,16 +37,12 @@
 								:items="userTypeSelect"
 								label="Type"
 								name="type"
-								filled
 								required
 							></v-select>
 						</v-card-text>
 						<v-card-actions>
 							<v-spacer></v-spacer>
-							<v-btn
-								color="black"
-								text
-								@click="showEditDialog = false"
+							<v-btn color="black" text @click="cancelFormEdit"
 								>Close</v-btn
 							>
 							<v-btn
@@ -69,6 +65,7 @@
 		</template>
 		<stat-card :stats="stats"></stat-card>
 		<Table
+			resource="Users"
 			:headers="headers"
 			:items="users"
 			:loading="loading"
@@ -140,6 +137,15 @@ export default {
 	},
 
 	methods: {
+		cancelFormEdit() {
+			this.showEditDialog = false;
+			// Overide properties because assignment won't work
+			for (const key in this.activeResource) {
+				if (this.activeResource.hasOwnProperty(key))
+					this.activeResource[key] = this.activeResourceModel[key];
+			}
+		},
+
 		deleteResource() {
 			const id = this.activeResource.id;
 
@@ -164,6 +170,8 @@ export default {
 				);
 
 			if (this.activeResource.hasOwnProperty("id")) {
+				this.requesting = true;
+
 				// Update user
 				this.$dash.resource("users").update(
 					id,
@@ -171,11 +179,17 @@ export default {
 					(response) => {
 						if (!response.error) {
 							this.showEditDialog = false;
+							this.requesting = false;
+							this.activeResource = this.activeResourceModel;
 							this.notify("User updated succefully");
 						}
 					},
 					{
 						usePost: true,
+						error: (response) => {
+							this.requesting = false;
+							this.notify(response.errors[0].title);
+						},
 					}
 				);
 			} else {

@@ -1,7 +1,6 @@
 const webpack = require("webpack");
 const path = require("path");
 const VueLoaderPlugin = require("vue-loader/lib/plugin");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const VuetifyLoaderPlugin = require("vuetify-loader/lib/plugin");
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
 	.BundleAnalyzerPlugin;
@@ -72,10 +71,6 @@ const config = {
 	},
 	plugins: [
 		new VueLoaderPlugin(),
-		new MiniCssExtractPlugin({
-			filename: "../css/[name].css",
-			chunkFilename: "[id].css",
-		}),
 		new webpack.HotModuleReplacementPlugin(),
 		// new BundleAnalyzerPlugin(),
 		new VuetifyLoaderPlugin(),

@@ -79,6 +79,10 @@ export default {
 			window.location.href = this.url + "/logout";
 		},
 	},
+
+	created() {
+		this.$store.dispatch("fetchBadges");
+	},
 };
 </script>
 

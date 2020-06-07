@@ -23,7 +23,10 @@ class Donation extends Model
 
     public function donor()
     {
-        return $this->belongsTo(Donor::class);
+		return $this->belongsTo(Donor::class)
+			->withDefault([
+				'firstname' => 'Unknown'
+			]);
 	}
 
 	public function getDonationTypeAttribute($value)
@@ -37,5 +40,5 @@ class Donation extends Model
 		return $types[$value];
 	}
 
-	
+
 }

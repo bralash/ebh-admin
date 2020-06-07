@@ -1,12 +1,12 @@
 <template>
 	<v-row>
 		<v-col v-for="stat in stats" :key="stat.name">
-			<v-card class="" max-width="344" outlined>
+			<v-card class="" max-width="220" elevation="0">
 				<v-list-item three-line>
 					<v-list-item-content>
 						<v-list-item-title
 							v-if="stat.value"
-							class="headline mb-1"
+							class="headline mb-1 font-weight-bold"
 							>{{ stat.value }}</v-list-item-title
 						>
 						<v-list-item-subtitle>{{

@@ -14,7 +14,7 @@
 				<v-btn color="grey darken-1" @click="emitClose" text>
 					Cancel
 				</v-btn>
-				<v-btn color="red" @click="emitDelete" text>
+				<v-btn color="red" :loading="loading" @click="emitDelete" text>
 					Delete
 				</v-btn>
 			</v-card-actions>
@@ -31,14 +31,23 @@ export default {
 		value: Boolean,
 	},
 	data() {
-		return {};
+		return {
+			loading: false,
+		};
 	},
 	methods: {
 		emitDelete() {
+			this.loading = true;
 			this.$emit("delete");
 		},
 		emitClose() {
+			this.loading = false;
 			this.$emit("input", false);
+		},
+	},
+	watch: {
+		value: function (newVal) {
+			if (newVal == false) this.loading = false;
 		},
 	},
 };

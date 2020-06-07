@@ -6,25 +6,31 @@ export const ResourceMixin = {
 			requesting: false,
 			showDeleteDialog: false,
 			showEditDialog: false,
+			activeResourceModel: {},
 			activeResource: {},
 		};
 	},
 	methods: {
 		initEdit(item) {
 			this.showEditDialog = true;
+			this.activeResourceModel = Object.assign({}, item);
 			this.activeResource = item;
 		},
 
 		initDelete(item) {
 			this.showDeleteDialog = true;
+			this.activeResourceModel = Object.assign({}, item);
 			this.activeResource = item;
 		},
 
 		notify(message) {
-			const $comp = this;
+			this.toastText = message;
+			this.toast = true;
+		},
 
-			$comp.toastText = message;
-			$comp.toast = true;
+		triggerEditDialog() {
+			this.showEditDialog = true;
+			this.activeResource = {};
 		},
 	},
 };

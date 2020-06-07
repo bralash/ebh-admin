@@ -1,7 +1,12 @@
 <template>
 	<page name="Donations" desc="Manage blood donations">
 		<stat-card :stats="stats"></stat-card>
-		<Table :headers="headers" :items="donations" :loading="loading"></Table>
+		<Table
+			resource="Donations"
+			:headers="headers"
+			:items="donations"
+			:loading="loading"
+		></Table>
 	</page>
 </template>
 
