@@ -1,7 +1,12 @@
 <template>
 	<page name="Badges" desc="Manage all blood requests">
 		<stat-card :stats="stats"></stat-card>
-		<Table :headers="headers" :items="badges" :loading="loading"></Table>
+		<Table
+			resource="Communities"
+			:headers="headers"
+			:items="badges"
+			:loading="loading"
+		></Table>
 	</page>
 </template>
 

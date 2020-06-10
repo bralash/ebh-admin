@@ -13,9 +13,7 @@ class BloodRequestSeeder extends Seeder
      */
     public function run()
     {
-		factory(BloodRequest::class, 50)->create()->each(function ($request) {
-			$request->donations()->save(factory(Donation::class)->make());
-		});
+		factory(BloodRequest::class, 50)->create();
         //
     }
 }

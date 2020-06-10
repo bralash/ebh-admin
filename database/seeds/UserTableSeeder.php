@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User\User;
 use Illuminate\Database\Seeder;
 use App\Models\User\UserAccessKey;
 
@@ -17,19 +18,17 @@ class UserTableSeeder extends Seeder
         DB::table('users')->insert([
             [
                 'name' => 'John Doe',
-                'phone' => '0241597539',
+                'phone' => '0200000000',
                 'password' => bcrypt('password'),
                 'account_type' => 1,
                 'account_id' => 1,
-                // 'status' => 1,
             ],
             [
                 'name' => 'Jane Doe',
-                'phone' => '0209505135',
+                'phone' => '0244444444',
                 'password' => bcrypt('password'),
                 'account_type' => 1,
                 'account_id' => 1,
-                // 'status' => 1,
             ]
         ]);
 
@@ -44,7 +43,6 @@ class UserTableSeeder extends Seeder
                 'user_id' => 2,
                 'api_key' => UserAccessKey::new(),
             ],
-        ]);
-        //
+		]);
     }
 }

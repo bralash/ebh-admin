@@ -77,7 +77,7 @@ export default {
 
 					return {
 						requested_by: rel.requester.name,
-						phone: rel.requester.phone,
+						phone: request.attributes.requester_phone,
 						community: rel.location.name,
 						blood_type: rel.blood_type.name,
 						donations: rel.donations.length,

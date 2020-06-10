@@ -10,8 +10,8 @@ $factory->define(Donation::class, function (Faker $faker) {
     return [
 		'donor_id' => rand(1, 10),
 		'donation_type' => rand(1, 2),
-		'event_id' => rand(1,5),
-		'volume' => 100,
+		'event_id' => rand(1, 5),
+		'volume' => rand(50, 100),
 		'stage' => rand(1, 3),
 		'donation_uid' => Generator::generateCode(5)
     ];

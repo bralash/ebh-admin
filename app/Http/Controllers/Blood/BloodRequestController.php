@@ -30,7 +30,7 @@ class BloodRequestController extends Controller
         // Collection
         $collection = $canSeeClosed ? BloodRequest::all() : BloodRequest::where('closed_at', NULL)->get();
 
-        $this->response->addCollection($collection->all(), 'blood_requests', ['created_at', 'notification_sent_at', 'closed_at'], ['requester', 'location', 'blood_type', 'donations']);
+        $this->response->addCollection($collection->all(), 'blood_requests', ['requester_phone', 'created_at', 'notification_sent_at', 'closed_at'], ['requester', 'location', 'blood_type', 'donations']);
 
         // Response
         return $this->response->ok();

@@ -1,6 +1,8 @@
 <?php
 
+use App\Models\Donation\Donor;
 use Illuminate\Database\Seeder;
+use App\Models\Donation\Donation;
 
 class DonorSeeder extends Seeder
 {
@@ -11,6 +13,8 @@ class DonorSeeder extends Seeder
      */
     public function run()
     {
-        //
+		factory(Donor::class, 10)->create()->each(function($donor) {
+			$donor->donations()->save(factory(Donation::class)->make());
+		});
     }
 }

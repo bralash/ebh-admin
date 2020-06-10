@@ -33,5 +33,10 @@ class Donor extends Model
     public function community()
     {
         return $this->belongsTo(Community::class);
-    }
+	}
+
+	public function donations()
+	{
+		return $this->hasMany(Donation::class);
+	}
 }
