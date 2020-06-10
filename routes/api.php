@@ -60,7 +60,7 @@ Route::group(['prefix' => 'v1'], function () {
 
     Route::group(['namespace' => 'Location'], function () {
         // communities/*
-        Route::resource('communities', 'CommunityController');
+		Route::resource('communities', 'CommunityController');
     });
 
     Route::group(['namespace' => 'Organization'], function () {

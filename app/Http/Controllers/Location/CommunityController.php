@@ -26,7 +26,7 @@ class CommunityController extends Controller
      */
     public function index()
     {
-        $paginated = (object) $this->repo::paginate(50)->toArray();
+        $paginated = (object) $this->repo::paginate(200)->toArray();
 
         // Add links to response
         $this->addPaginationLinks($paginated);
@@ -38,7 +38,7 @@ class CommunityController extends Controller
         $this->response->addCollection($paginated->data, 'communities', ['id', 'name', 'region', 'district', 'gps_address']);
 
         return $this->response->ok();
-    }
+	}
 
     /**
      * Stores a
