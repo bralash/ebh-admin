@@ -29,9 +29,9 @@ class DonationController extends Controller
      */
     public function index(Request $request)
     {
-        if (!$request->user->isAdmin) {
-            return $this->response->forbidden();
-        }
+        // if (!$request->user->isAdmin) {
+        //     return $this->response->forbidden();
+        // }
 
         // Search donations by blood group + location
         $params = $request->all();
