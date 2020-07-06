@@ -13,6 +13,7 @@ class BloodRequestSeeder extends Seeder
      */
     public function run()
     {
+		DB::table('blood_requests')->delete();
 		factory(BloodRequest::class, 50)->create();
         //
     }

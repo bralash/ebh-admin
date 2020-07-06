@@ -61,7 +61,7 @@ class LoginController extends Controller
      */
     protected function credentials(Request $request)
     {
-		$credentials = array_merge($request->only($this->username(), 'password'), ['account_type' => User::TYPE_ADMIN]);
+		$credentials = array_merge($request->only($this->username(), 'password'), ['account_type' => User::TYPE_GENERAL]);
 		return $credentials;
 	}
 

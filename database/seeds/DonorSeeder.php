@@ -13,6 +13,8 @@ class DonorSeeder extends Seeder
      */
     public function run()
     {
+		DB::table('donors')->delete();
+
 		factory(Donor::class, 10)->create()->each(function($donor) {
 			$donor->donations()->save(factory(Donation::class)->make());
 		});
