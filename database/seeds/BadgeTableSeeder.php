@@ -15,7 +15,7 @@ class BadgeTableSeeder extends Seeder
 
         DB::table('badges')->insert([
             [
-                'name' => 'Regular',
+                'name' => 'Beginner Donor',
                 'points' => '0',
             ]
         ]);

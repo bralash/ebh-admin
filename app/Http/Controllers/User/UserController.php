@@ -107,7 +107,7 @@ class UserController extends Controller
 
 	public function update(Request $request, User $user)
 	{
-		if (!$request->user->isAdmin)
+		if (!$request->user->isAdmin && $request->user->id !== $user->id)
 			return $this->response->forbidden('You can\'t perform this action');
 
 		try {
